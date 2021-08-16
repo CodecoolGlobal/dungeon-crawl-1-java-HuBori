@@ -6,9 +6,9 @@ import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
 
 public abstract class Character implements Drawable {
     private Cell cell;
-    private int maxHealth;
-    private int defense;
-    private int attack;
+    protected static int maxHealth;
+    protected static int defense;
+    protected static int attack;
     private int health = maxHealth;
 
     public Character(Cell cell) {
@@ -62,6 +62,7 @@ public abstract class Character implements Drawable {
             if (victim.health <= 0) { // dies if HP 0 (should change to < 0 later)
                 if (victim instanceof Player) {
                     // TODO: Game Over!
+                    System.out.println("Game Over!");
                 }
                 cell.setActor(null);
             }
