@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.GameMap;
 
 public abstract class Character implements Drawable {
     private Cell cell;
@@ -18,6 +19,8 @@ public abstract class Character implements Drawable {
         nextCell.setActor(this);
         cell = nextCell;
     }
+
+    abstract public void monsterMove(GameMap map);
 
     public int getHealth() {
         return health;

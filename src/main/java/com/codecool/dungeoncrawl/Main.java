@@ -80,6 +80,14 @@ public class Main extends Application {
                 }
                 break;
         }
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
+                cell = map.getCell(x, y);
+                if (cell.getActor() != null) {
+                    cell.getActor().monsterMove(map);
+                }
+            }
+        }
         refresh();
     }
 
