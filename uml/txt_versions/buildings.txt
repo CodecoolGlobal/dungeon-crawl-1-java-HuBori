@@ -1,0 +1,33 @@
+package buildings {
+    package locks {
+        Lock *-- LockType
+    }
+    Obstacle *-- ObstacleType
+    Obstacle --|> Wall
+    Obstacle --|> Lock
+}
+
+class Lock {
+    - char {final static} representative
+    - Key key
+    - boolean reachable
+}
+
+enum LockType {
+    ROOM
+    CHEST
+    STAIR
+}
+
+interface Obstacle {
+}
+
+enum ObstacleType {
+    MONSTER
+    DOOR
+    WALL
+    STAIR
+}
+
+class Wall {
+}

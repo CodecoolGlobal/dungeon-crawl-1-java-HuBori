@@ -1,0 +1,39 @@
+package actors {
+    package enemies {
+        MonsterType "1" --* "1" Monster
+        Monster --|> GiddyMonster
+        Monster --|> MarchingMonster
+        Monster --|> MuzzyMonster
+    }
+    Character --|> Player
+    Character --|> Monster
+}
+
+class GiddyMonster {
+    + GiddyMonster(Cell cell)
+}
+
+class MarchingMonster {
+    + MarchingMonster(Cell cell)
+}
+
+class Monster {
+    + Monster(Cell cell)
+}
+
+enum MonsterType {
+    MUZZY
+    MARCHING
+    GIDDY
+}
+
+abstract class Character {
+    - Cell cell
+    - int health = 10
+    + Character(Cell cell)
+    + void move(int dx, int dy)
+}
+
+class Player {
+    + Player(Cell cell)
+}

@@ -1,0 +1,50 @@
+package logic {
+    package actors {
+    }
+    package buildings {
+    }
+    package items {
+    }
+    Cell "1" *-- "1" CellType
+    GameMap --> MapLoader
+    GameMap "1" *-- "many" Cell
+    MapLoader --> Drawable
+}
+
+class Cell {
+    - CellType type
+    - Character actor
+    - GameMap gameMap
+    - int x, y
+    ..
+    + Cell(GameMap gameMap, int x, int y, CellType type)
+    + Cell getNeighbor(int dx, int dy)
+    + String getTileName()
+}
+
+enum CellType {
+    EMPTY
+    FLOOR
+    WALL
+    - final String tileName
+    ..
+    CellType(String tileName)
+}
+
+interface Drawable {
+    String getTileName()
+}
+
+class GameMap {
+    - int width
+    - int height
+    - Cell[][] cells
+    - Player player
+    ..
+    + GameMap(int width, int height, CellType defaultCellType)
+}
+
+class MapLoader {
+    ..
+    + static GameMap loadMap()
+}

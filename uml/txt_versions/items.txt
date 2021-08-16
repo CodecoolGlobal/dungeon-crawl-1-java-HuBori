@@ -1,0 +1,58 @@
+package items {
+    package defence {
+        Armor *-- ArmorType
+    }
+    package offence {
+        Weapon *-- WeaponType
+    }
+    package utility {
+        Key *-- KeyType
+    }
+    Item *-- ItemType
+    Item --|> Armor
+    Item --|> Weapon
+    Item --|> Key
+}
+
+class Armor {
+
+}
+
+enum ArmorType {
+    SHIELD
+    HELMET
+}
+
+class Weapon {
+}
+
+enum WeaponType {
+    LONGSWORD(5)
+    MACE(10)
+    DAGGER(1)
+    SHORTSWORD(3)
+    LANCE(8)
+}
+
+class Key {
+    - int level
+    - KeyType type
+    - String detail
+}
+
+enum KeyType {
+    GOLD(DoorType("stair"))
+    SILVER(DoorType("chest"))
+    BRONSE(DoorType("room"))
+}
+
+class Item {
+    - ItemType type
+	- String detail
+}
+
+enum ItemType {
+    WEAPON
+    ARMOR
+    UTILITY
+}
