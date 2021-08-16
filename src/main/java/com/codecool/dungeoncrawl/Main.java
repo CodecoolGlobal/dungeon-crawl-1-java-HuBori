@@ -57,25 +57,25 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() - 1);
-                if (cell.getType() != CellType.WALL && cell.getActor() == null) {
+                if (canGoThere(cell)) {
                     map.getPlayer().move(0, -1);
                 }
                 break;
             case DOWN:
                 cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() + 1);
-                if (cell.getType() != CellType.WALL && cell.getActor() == null) {
+                if (canGoThere(cell)) {
                     map.getPlayer().move(0, 1);
                 }
                 break;
             case LEFT:
                 cell = map.getCell(map.getPlayer().getX() - 1, map.getPlayer().getY());
-                if (cell.getType() != CellType.WALL && cell.getActor() == null) {
+                if (canGoThere(cell)) {
                     map.getPlayer().move(-1, 0);
                 }
                 break;
             case RIGHT:
                 cell = map.getCell(map.getPlayer().getX() + 1, map.getPlayer().getY());
-                if (cell.getType() != CellType.WALL && cell.getActor() == null) {
+                if (canGoThere(cell)) {
                     map.getPlayer().move(1, 0);
                 }
                 break;
@@ -97,5 +97,13 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+    }
+
+    private boolean canAttack() { // TODO: implement it
+        return false;
+    }
+
+    private boolean canGoThere(Cell cell) { // TODO: fix it so player can move on items
+        return cell.getType() != CellType.WALL && cell.getActor() == null;
     }
 }
