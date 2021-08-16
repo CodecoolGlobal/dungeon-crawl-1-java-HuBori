@@ -9,10 +9,10 @@ class App {
 }
 
 class Main {
-    GameMap map
-    Canvas canvas
-    GraphicsContext context
-    Label healthLabel
+    - GameMap map
+    - Canvas canvas
+    - GraphicsContext context
+    - Label healthLabel
     ..
     + static void main(String[] args)
     + void start(Stage primaryStage)
