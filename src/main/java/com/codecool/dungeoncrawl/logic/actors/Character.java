@@ -45,8 +45,12 @@ public abstract class Character implements Drawable {
         for (int i = 0; i < 4; i++) {
             if (cell.getNeighbor(next[i][0], next[i][1]).getActor() != null) {
                 attack(cell.getNeighbor(next[i][0], next[i][1]).getActor());
+                System.out.println("Attack the enemy!");
+                System.out.println("\tit's health: " + cell.getNeighbor(next[i][0], next[i][1]).getActor().health);
                 if (cell.getNeighbor(next[i][0], next[i][1]).getActor() != null) {
                     cell.getNeighbor(next[i][0], next[i][1]).getActor().attack(this);
+                    System.out.println("The enemy attacked me!");
+                    System.out.println("\tmy health: " + health);
                 }
             }
         }
@@ -55,7 +59,10 @@ public abstract class Character implements Drawable {
     public void attack(Character victim) {
         if (attack >= victim.defense) {
             victim.health -= attack;
-            if (victim.health < 0) {
+            if (victim.health <= 0) { // dies if HP 0 (should change to < 0 later)
+                if (victim instanceof Player) {
+                    // TODO: Game Over!
+                }
                 cell.setActor(null);
             }
         }
