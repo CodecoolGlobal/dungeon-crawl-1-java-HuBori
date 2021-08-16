@@ -6,7 +6,10 @@ import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
 
 public abstract class Character implements Drawable {
     private Cell cell;
-    private int health = 10;
+    private int maxHealth;
+    private int defense;
+    private int attack;
+    private int health = maxHealth;
 
     public Character(Cell cell) {
         this.cell = cell;
