@@ -5,7 +5,7 @@ package logic {
 
 class App {
     ..
-    public static void main(String[] args)
+    + static void main(String[] args)
 }
 
 class Main {
@@ -14,18 +14,18 @@ class Main {
     GraphicsContext context
     Label healthLabel
     ..
-    public static void main(String[] args)
-    public void start(Stage primaryStage)
-    private void onKeyPressed(KeyEvent keyEvent)
-    private void refresh()
+    + static void main(String[] args)
+    + void start(Stage primaryStage)
+    - void onKeyPressed(KeyEvent keyEvent)
+    - void refresh()
 }
 
 class Tiles {
-    public static int TILE_WIDTH = 32
-    private static Image tileset
-    private static Map<String, Tile> tileMap
+    + static int TILE_WIDTH = 32
+    - static Image tileset
+    - static Map<String, Tile> tileMap
     ..
-    public static class Tile
+    + static class Tile
     ..
-    public static void drawTile(GraphicsContext context, Drawable d, int x, int y)
+    + static void drawTile(GraphicsContext context, Drawable d, int x, int y)
 }
