@@ -1,0 +1,31 @@
+App --> Main
+Main --> Tiles
+package logic {
+}
+
+class App {
+    ..
+    public static void main(String[] args)
+}
+
+class Main {
+    GameMap map
+    Canvas canvas
+    GraphicsContext context
+    Label healthLabel
+    ..
+    public static void main(String[] args)
+    public void start(Stage primaryStage)
+    private void onKeyPressed(KeyEvent keyEvent)
+    private void refresh()
+}
+
+class Tiles {
+    public static int TILE_WIDTH = 32
+    private static Image tileset
+    private static Map<String, Tile> tileMap
+    ..
+    public static class Tile
+    ..
+    public static void drawTile(GraphicsContext context, Drawable d, int x, int y)
+}
