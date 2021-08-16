@@ -43,9 +43,9 @@ public abstract class Character implements Drawable {
     private void attackIfCan() {
         int[][] next = new int[][] {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
         for (int i = 0; i < 4; i++) {
-            if (cell.getNeighbor(next[i][0], next[i][1]).getActor() instanceof Monster) {
+            if (cell.getNeighbor(next[i][0], next[i][1]).getActor() != null) {
                 attack(cell.getNeighbor(next[i][0], next[i][1]).getActor());
-                if (cell.getNeighbor(next[i][0], next[i][1]).getActor() instanceof Monster) {
+                if (cell.getNeighbor(next[i][0], next[i][1]).getActor() != null) {
                     cell.getNeighbor(next[i][0], next[i][1]).getActor().attack(this);
                 }
             }
@@ -53,6 +53,11 @@ public abstract class Character implements Drawable {
     }
 
     public void attack(Character victim) {
-        // TODO: implement it
+        if (attack >= victim.defense) {
+            victim.health -= attack;
+            if (victim.health < 0) {
+                cell.setActor(null);
+            }
+        }
     }
 }
