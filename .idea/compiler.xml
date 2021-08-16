@@ -9,5 +9,8 @@
         <module name="dungeon-crawl" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="dungeon-crawl" target="1.11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
