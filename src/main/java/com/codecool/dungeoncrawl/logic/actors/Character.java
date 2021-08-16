@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
 
 public abstract class Character implements Drawable {
     private Cell cell;
@@ -17,6 +18,7 @@ public abstract class Character implements Drawable {
         cell.setActor(null);
         nextCell.setActor(this);
         cell = nextCell;
+        attackIfCan();
     }
 
     public int getHealth() {
@@ -33,5 +35,21 @@ public abstract class Character implements Drawable {
 
     public int getY() {
         return cell.getY();
+    }
+
+    private void attackIfCan() {
+        int[][] next = new int[][] {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        for (int i = 0; i < 4; i++) {
+            if (cell.getNeighbor(next[i][0], next[i][1]).getActor() instanceof Monster) {
+                attack(cell.getNeighbor(next[i][0], next[i][1]).getActor());
+                if (cell.getNeighbor(next[i][0], next[i][1]).getActor() instanceof Monster) {
+                    cell.getNeighbor(next[i][0], next[i][1]).getActor().attack(this);
+                }
+            }
+        }
+    }
+
+    public void attack(Character victim) {
+        // TODO: implement it
     }
 }

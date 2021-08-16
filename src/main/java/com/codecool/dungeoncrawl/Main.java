@@ -4,6 +4,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
 import com.codecool.dungeoncrawl.logic.buildings.Wall;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -97,10 +99,6 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
-    }
-
-    private boolean canAttack() { // TODO: implement it
-        return false;
     }
 
     private boolean canGoThere(Cell cell) { // TODO: fix it so player can move on items
