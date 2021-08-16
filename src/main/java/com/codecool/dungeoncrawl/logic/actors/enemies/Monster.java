@@ -14,5 +14,5 @@ abstract public class Monster extends Character {
         return "default";
     }
 
-    public abstract void monsterMove(GameMap map);
+    abstract public void monsterMove(GameMap map);
 }

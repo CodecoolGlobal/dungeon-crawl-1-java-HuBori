@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.GameMap;
 
 public abstract class Character implements Drawable {
+    private boolean hasMoved = false;
     private Cell cell;
     private int health = 10;
 
@@ -21,6 +22,14 @@ public abstract class Character implements Drawable {
     }
 
     abstract public void monsterMove(GameMap map);
+
+    public boolean getHasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
+    }
 
     public int getHealth() {
         return health;

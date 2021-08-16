@@ -14,5 +14,6 @@ public class MuzzyMonster extends Monster { // immobile
         return "muzzy";
     }
 
+    @Override
     public void monsterMove(GameMap map) {}
 }

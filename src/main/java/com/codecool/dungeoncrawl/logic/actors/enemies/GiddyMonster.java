@@ -5,7 +5,6 @@ import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
 
-import java.util.Map;
 import java.util.Random;
 
 public class GiddyMonster extends Monster { // moves randomly
@@ -18,6 +17,7 @@ public class GiddyMonster extends Monster { // moves randomly
         return "giddy";
     }
 
+    @Override
     public void monsterMove(GameMap map) {
         Random rand = new Random();
         int[][] directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
