@@ -1,1 +1,5 @@
 /target/
+.idea
+dungeon-crawl.iml
+pom.xml
+README.md
