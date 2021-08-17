@@ -3,7 +3,6 @@ package com.codecool.dungeoncrawl.logic.actors.enemies;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
 
 import java.util.Random;
 
@@ -14,7 +13,8 @@ public class MarchingMonster extends Monster { // moves back and forth
         super(cell);
         maxHealth = 10;
         defense = 5;
-        attack = 2;
+        attack = 5;
+        health = maxHealth;
         determineFacing();
     }
 
@@ -36,10 +36,11 @@ public class MarchingMonster extends Monster { // moves back and forth
 
     @Override
     public void monsterMove(GameMap map) {
-        if(map.getCell(this.getX() + direction[0], this.getY() + direction[1]).getType() == CellType.WALL){
+        Cell cell = map.getCell(this.getX() + direction[0], this.getY() + direction[1]);
+        if(cell.getType() == CellType.WALL){
             direction[0] *= -1;
             direction[1] *= -1;
         }
-        this.move(direction[0], direction[1]);
+        this.tryMove(direction[0], direction[1]);
     }
 }

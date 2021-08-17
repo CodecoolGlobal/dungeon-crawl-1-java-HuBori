@@ -4,9 +4,6 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
-import com.codecool.dungeoncrawl.logic.buildings.Wall;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -59,38 +56,30 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() - 1);
-                if (canGoThere(cell)) {
-                    map.getPlayer().move(0, -1);
+                if (cell.getType() != CellType.WALL) {
+                    map.getPlayer().tryMove(0, -1);
                 }
                 break;
             case DOWN:
                 cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() + 1);
-                if (canGoThere(cell)) {
-                    map.getPlayer().move(0, 1);
+                if (cell.getType() != CellType.WALL) {
+                    map.getPlayer().tryMove(0, 1);
                 }
                 break;
             case LEFT:
                 cell = map.getCell(map.getPlayer().getX() - 1, map.getPlayer().getY());
-                if (canGoThere(cell)) {
-                    map.getPlayer().move(-1, 0);
+                if (cell.getType() != CellType.WALL) {
+                    map.getPlayer().tryMove(-1, 0);
                 }
                 break;
             case RIGHT:
                 cell = map.getCell(map.getPlayer().getX() + 1, map.getPlayer().getY());
-                if (canGoThere(cell)) {
-                    map.getPlayer().move(1, 0);
+                if (cell.getType() != CellType.WALL) {
+                    map.getPlayer().tryMove(1, 0);
                 }
                 break;
         }
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                cell = map.getCell(x, y);
-                if (cell.getActor() != null && !cell.getActor().getHasMoved()) {
-                    cell.getActor().setHasMoved(true);
-                    cell.getActor().monsterMove(map);
-                }
-            }
-        }
+        enemyMovement();
         refresh();
     }
 
@@ -111,7 +100,15 @@ public class Main extends Application {
         healthLabel.setText("" + map.getPlayer().getHealth());
     }
 
-    private boolean canGoThere(Cell cell) { // TODO: fix it so player can move on items
-        return cell.getType() != CellType.WALL && cell.getActor() == null;
+    private void enemyMovement(){
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
+                Cell cell = map.getCell(x, y);
+                if (cell.getActor() != null && !cell.getActor().getHasMoved()) {
+                    cell.getActor().setHasMoved(true);
+                    cell.getActor().monsterMove(map);
+                }
+            }
+        }
     }
 }
