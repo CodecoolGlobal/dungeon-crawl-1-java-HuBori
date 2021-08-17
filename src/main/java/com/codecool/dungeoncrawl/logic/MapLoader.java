@@ -1,7 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
+import com.codecool.dungeoncrawl.logic.actors.enemies.*;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -31,9 +31,17 @@ public class MapLoader {
                         case '.':
                             cell.setType(CellType.FLOOR);
                             break;
-                        case 's':
+                        case 'g': // giddy
                             cell.setType(CellType.FLOOR);
-                            new Monster(cell);
+                            new GiddyMonster(cell);
+                            break;
+                        case 'm': // marching
+                            cell.setType(CellType.FLOOR);
+                            new MarchingMonster(cell);
+                            break;
+                        case 's': // stationary
+                            cell.setType(CellType.FLOOR);
+                            new MuzzyMonster(cell);
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);

@@ -1,9 +1,10 @@
 package com.codecool.dungeoncrawl.logic.actors.enemies;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Character;
 
-public class Monster extends Character {
+abstract public class Monster extends Character {
 
     public Monster(Cell cell) {
         super(cell);
@@ -11,6 +12,8 @@ public class Monster extends Character {
 
     @Override
     public String getTileName() {
-        return "skeleton";
+        return "default";
     }
+
+    abstract public void monsterMove(GameMap map);
 }

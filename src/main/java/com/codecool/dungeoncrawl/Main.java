@@ -82,6 +82,15 @@ public class Main extends Application {
                 }
                 break;
         }
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
+                cell = map.getCell(x, y);
+                if (cell.getActor() != null && !cell.getActor().getHasMoved()) {
+                    cell.getActor().setHasMoved(true);
+                    cell.getActor().monsterMove(map);
+                }
+            }
+        }
         refresh();
     }
 
@@ -92,6 +101,7 @@ public class Main extends Application {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
+                    cell.getActor().setHasMoved(false);
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else {
                     Tiles.drawTile(context, cell, x, y);
