@@ -27,11 +27,7 @@ public class Player extends Character {
 
     @Override
     public void setHealth(int modify) {
-        if (getHealth() + modify < 0) {
-            System.out.println("Game Over"); // TODO: Implement it
-        } else {
-            super.setHealth(modify);
-        }
+        this.health = modify;
     }
 
     public void monsterMove(GameMap map) {}
