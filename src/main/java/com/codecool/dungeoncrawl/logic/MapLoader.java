@@ -4,6 +4,8 @@ import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
+import com.codecool.dungeoncrawl.logic.items.defence.Armor;
+import com.codecool.dungeoncrawl.logic.items.defence.ArmorType;
 import com.codecool.dungeoncrawl.logic.items.offence.Weapon;
 import com.codecool.dungeoncrawl.logic.items.offence.WeaponType;
 import com.codecool.dungeoncrawl.logic.items.utility.Key;
@@ -55,14 +57,19 @@ public class MapLoader {
                             map.setPlayer(new Player(cell));
                             break;
                         case 'k':
-                            cell.setType(CellType.KEY);
-                            new Key(cell, KeyType.BRONSE, 1, "only key");
-                            map.getCell(cell.getX(), cell.getY()).setItem(new Item(cell, ItemType.UTILITY, "bronse key"));
+                            cell.setType(CellType.FLOOR);
+                            Key key = new Key(cell, KeyType.BRONSE, 1, "only key");
+                            cell.setItem(key);
                             break;
                         case 'w':
-                            cell.setType(CellType.WEAPON);
-                            new Weapon(cell, WeaponType.LONGSWORD);
-                            map.getCell(cell.getX(), cell.getY()).setItem(new Item(cell, ItemType.WEAPON, "longsword"));
+                            cell.setType(CellType.FLOOR);
+                            Weapon weapon = new Weapon(cell, WeaponType.LONGSWORD);
+                            cell.setItem(weapon);
+                            break;
+                        case 'a':
+                            cell.setType(CellType.FLOOR);
+                            Armor armor = new Armor(cell, ArmorType.SHIELD);
+                            cell.setItem(armor);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

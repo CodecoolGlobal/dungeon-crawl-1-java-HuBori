@@ -53,6 +53,7 @@ public class Main extends Application {
                 Item item = map.getPlayer().getCell().getItem();
                 if (item != null) {
                     inventory.add(item);
+                    System.out.println(item.getType());
                     switch (item.getType()) {
                         case ARMOR:
                             switch (item.getDetail()) {

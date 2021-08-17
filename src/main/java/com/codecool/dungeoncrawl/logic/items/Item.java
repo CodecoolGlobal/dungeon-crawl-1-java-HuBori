@@ -3,7 +3,7 @@ package com.codecool.dungeoncrawl.logic.items;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 
-public class Item {
+public abstract class Item {
     private ItemType type;
 	private String detail;
 	private Cell cell;
@@ -27,4 +27,6 @@ public class Item {
     public String getDetail() {
         return detail;
     }
+
+    public abstract String getTileName();
 }

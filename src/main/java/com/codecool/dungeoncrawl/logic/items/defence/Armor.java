@@ -1,15 +1,23 @@
 package com.codecool.dungeoncrawl.logic.items.defence;
 
-public class Armor {
-    private ArmorType type;
-    private String detail;
+import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.items.ItemType;
 
-    public Armor(ArmorType type, String detail) {
-        this.type = type;
-        this.detail = detail;
+public class Armor extends Item {
+    private ArmorType subType;
+
+    public Armor(Cell cell, ArmorType type) {
+        super(cell, ItemType.ARMOR, type.toString().toLowerCase());
+        this.subType = type;
     }
 
-    public ArmorType getType() {
-        return type;
+    @Override
+    public String getTileName() {
+        return "armor";
+    }
+
+    public ArmorType getSubType() {
+        return subType;
     }
 }
