@@ -54,8 +54,8 @@ public class Main extends Application {
 
         Button btn = new Button();
         btn.setText("Pick up");
-        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
+        EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent click) {
                 Item item = map.getPlayer().getCell().getItem();
                 if (item != null) {
                     inventory.add(item);
@@ -78,6 +78,7 @@ public class Main extends Application {
                         default: throw new ClassCastException("No such item type handles");
                     }
                 }
+                canvas.requestFocus();
             }
         };
 
@@ -92,11 +93,13 @@ public class Main extends Application {
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
         refresh();
-        scene.setOnKeyPressed(this::onKeyPressed);
-        btn.setOnAction(event); // TODO: make it be able to move
+        //scene.setOnKeyPressed(this::onKeyPressed);
+        btn.setOnAction(handler);
 
         primaryStage.setTitle("Dungeon Crawl");
+        canvas.requestFocus();
         primaryStage.show();
     }
 
@@ -126,6 +129,7 @@ public class Main extends Application {
                 if (canGoThere(cell)) {
                     map.getPlayer().move(1, 0);
                 }
+                canvas.requestFocus();
                 break;
         }
         for (int x = 0; x < map.getWidth(); x++) {
