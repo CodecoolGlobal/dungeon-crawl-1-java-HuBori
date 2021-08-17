@@ -63,4 +63,8 @@ public class Cell implements Drawable {
     public Lock getLock() {
         return lock;
     }
+
+    public void setLock(Lock lock) {
+        this.lock = lock;
+    }
 }
