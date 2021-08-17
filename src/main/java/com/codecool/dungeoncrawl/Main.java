@@ -38,6 +38,7 @@ public class Main extends Application {
     private Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
+    private Button btn = new Button();
     private GraphicsContext context = canvas.getGraphicsContext2D();
     private Label healthLabel = new Label();
     private List<Item> inventory = new ArrayList<>();
@@ -52,7 +53,6 @@ public class Main extends Application {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
 
-        Button btn = new Button();
         btn.setText("Pick up");
         EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent click) {
@@ -129,7 +129,6 @@ public class Main extends Application {
                 if (canGoThere(cell)) {
                     map.getPlayer().move(1, 0);
                 }
-                canvas.requestFocus();
                 break;
         }
         for (int x = 0; x < map.getWidth(); x++) {
@@ -159,6 +158,13 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+        if (map.getPlayer().getCell().getItem() == null) { // TODO: add items to cells
+            // TODO: fix bug
+            canvas.requestFocus();
+        } else {
+            System.out.println("I'm standing on an item! Let's pick it up!");
+            btn.requestFocus();
+        }
     }
 
     private boolean canGoThere(Cell cell) { // TODO: fix it so player can move on items
