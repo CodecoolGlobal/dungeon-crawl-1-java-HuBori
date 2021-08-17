@@ -1,15 +1,12 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
-<<<<<<< HEAD
 import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
 import com.codecool.dungeoncrawl.logic.items.offence.Weapon;
 import com.codecool.dungeoncrawl.logic.items.offence.WeaponType;
 import com.codecool.dungeoncrawl.logic.items.utility.Key;
 import com.codecool.dungeoncrawl.logic.items.utility.KeyType;
-=======
 import com.codecool.dungeoncrawl.logic.actors.enemies.*;
->>>>>>> f47e4cd1af4bf28b0788106708a1afe6721d9dab
 
 import java.io.InputStream;
 import java.util.Scanner;
