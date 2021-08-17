@@ -1,8 +1,11 @@
 package com.codecool.dungeoncrawl.logic.items.defence;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
+
+import java.util.List;
 
 public class Armor extends Item {
     private ArmorType subType;
@@ -15,6 +18,13 @@ public class Armor extends Item {
     @Override
     public String getTileName() {
         return "armor";
+    }
+
+    @Override
+    public void pickUp(List<Item> inventory, GameMap map){
+        inventory.add(this);
+        map.getCell(cell.getX(), cell.getY()).setItem(null);
+        map.getPlayer().setDefense(subType.getProtection());
     }
 
     public ArmorType getSubType() {

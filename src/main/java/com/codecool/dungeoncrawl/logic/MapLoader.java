@@ -58,18 +58,15 @@ public class MapLoader {
                             break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
-                            Key key = new Key(cell, KeyType.BRONSE, 1, "only key");
-                            cell.setItem(key);
+                            new Key(cell, KeyType.BRONSE, 1, "only key"); // TODO: level 1 is magic number, replace it with map num!
                             break;
                         case 'w':
                             cell.setType(CellType.FLOOR);
-                            Weapon weapon = new Weapon(cell, WeaponType.LONGSWORD);
-                            cell.setItem(weapon);
+                            new Weapon(cell, WeaponType.LONGSWORD);
                             break;
                         case 'a':
                             cell.setType(CellType.FLOOR);
-                            Armor armor = new Armor(cell, ArmorType.SHIELD);
-                            cell.setItem(armor);
+                            new Armor(cell, ArmorType.SHIELD);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

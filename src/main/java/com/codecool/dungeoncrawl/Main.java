@@ -52,26 +52,8 @@ public class Main extends Application {
             public void handle(ActionEvent click) {
                 Item item = map.getPlayer().getCell().getItem();
                 if (item != null) {
-                    inventory.add(item);
-                    System.out.println(item.getType());
-                    switch (item.getType()) {
-                        case ARMOR:
-                            switch (item.getDetail()) {
-                                case "shield": map.getPlayer().setDefense(ArmorType.SHIELD.getProtection()); break;
-                                case "helmet": map.getPlayer().setDefense(ArmorType.HELMET.getProtection()); break;
-                                default: throw new ClassCastException("No such type of armor handled");
-                            }
-                        case WEAPON:
-                            switch (item.getDetail()) {
-                                case "longsword": map.getPlayer().setDefense(WeaponType.LONGSWORD.getAttack()); break;
-                                case "mace": map.getPlayer().setDefense(WeaponType.MACE.getAttack()); break;
-                                case "dagger": map.getPlayer().setDefense(WeaponType.DAGGER.getAttack()); break;
-                                case "shortsword": map.getPlayer().setDefense(WeaponType.SHORTSWORD.getAttack()); break;
-                                case "lance": map.getPlayer().setDefense(WeaponType.LANCE.getAttack()); break;
-                                default: throw new ClassCastException("No such type of weapon handled");
-                            }
-                        default: throw new ClassCastException("No such item type handles");
-                    }
+                    item.pickUp(inventory, map);
+                    System.out.println("You picked up a " + item.getDetail() + "!");
                 }
                 canvas.requestFocus();
             }

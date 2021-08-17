@@ -30,9 +30,6 @@ public class Cell implements Drawable {
     }
 
     public void setItem(Item item) {
-        if (this.item != null) {
-            throw new IndexOutOfBoundsException("You can NOT place multiple items on the same cell!");
-        }
         this.item = item;
     }
 
