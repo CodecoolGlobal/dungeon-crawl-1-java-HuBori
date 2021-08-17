@@ -12,6 +12,9 @@ public class MarchingMonster extends Monster { // moves back and forth
 
     public MarchingMonster(Cell cell) {
         super(cell);
+        maxHealth = 10;
+        defense = 5;
+        attack = 2;
         determineFacing();
     }
 

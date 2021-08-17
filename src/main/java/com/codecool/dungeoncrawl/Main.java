@@ -4,6 +4,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
 import com.codecool.dungeoncrawl.logic.buildings.Wall;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -18,12 +20,12 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
-    Canvas canvas = new Canvas(
+    private GameMap map = MapLoader.loadMap();
+    private Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
-    GraphicsContext context = canvas.getGraphicsContext2D();
-    Label healthLabel = new Label();
+    private GraphicsContext context = canvas.getGraphicsContext2D();
+    private Label healthLabel = new Label();
 
     public static void main(String[] args) {
         launch(args);
@@ -57,25 +59,25 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() - 1);
-                if (cell.getType() != CellType.WALL && cell.getActor() == null) {
+                if (canGoThere(cell)) {
                     map.getPlayer().move(0, -1);
                 }
                 break;
             case DOWN:
                 cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() + 1);
-                if (cell.getType() != CellType.WALL && cell.getActor() == null) {
+                if (canGoThere(cell)) {
                     map.getPlayer().move(0, 1);
                 }
                 break;
             case LEFT:
                 cell = map.getCell(map.getPlayer().getX() - 1, map.getPlayer().getY());
-                if (cell.getType() != CellType.WALL && cell.getActor() == null) {
+                if (canGoThere(cell)) {
                     map.getPlayer().move(-1, 0);
                 }
                 break;
             case RIGHT:
                 cell = map.getCell(map.getPlayer().getX() + 1, map.getPlayer().getY());
-                if (cell.getType() != CellType.WALL && cell.getActor() == null) {
+                if (canGoThere(cell)) {
                     map.getPlayer().move(1, 0);
                 }
                 break;
@@ -107,5 +109,9 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+    }
+
+    private boolean canGoThere(Cell cell) { // TODO: fix it so player can move on items
+        return cell.getType() != CellType.WALL && cell.getActor() == null;
     }
 }

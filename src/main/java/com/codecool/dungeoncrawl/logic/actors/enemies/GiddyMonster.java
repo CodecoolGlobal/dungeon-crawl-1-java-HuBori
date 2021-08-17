@@ -10,6 +10,9 @@ import java.util.Random;
 public class GiddyMonster extends Monster { // moves randomly
     public GiddyMonster(Cell cell) {
         super(cell);
+        maxHealth = 5;
+        defense = 1;
+        attack = 10;
     }
 
     @Override

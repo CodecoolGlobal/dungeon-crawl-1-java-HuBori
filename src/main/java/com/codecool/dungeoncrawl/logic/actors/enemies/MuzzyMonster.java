@@ -7,6 +7,9 @@ import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
 public class MuzzyMonster extends Monster { // immobile
     public MuzzyMonster(Cell cell) {
         super(cell);
+        maxHealth = 30;
+        defense = 10;
+        attack = 1;
     }
 
     @Override
