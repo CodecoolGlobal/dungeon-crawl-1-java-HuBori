@@ -1,4 +1,8 @@
 package com.codecool.dungeoncrawl.logic.buildings;
 
-public interface Obstacle {
+import com.codecool.dungeoncrawl.logic.Drawable;
+
+public interface Obstacle extends Drawable {
+    @Override
+    String getTileName();
 }
