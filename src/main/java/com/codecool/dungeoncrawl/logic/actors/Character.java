@@ -9,6 +9,7 @@ import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.key.Key;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Character implements Drawable {
@@ -27,11 +28,11 @@ public abstract class Character implements Drawable {
         this.health = maxHealth;
     }
 
-    public void tryMove(int dx, int dy, List<Item> inventory) {
+    public void tryMove(int dx, int dy, ArrayList<Item> keys) {
         Cell nextCell = this.cell.getNeighbor(dx, dy);
         attackIfCan(nextCell);
         if (nextCell.getActor() == null) {
-            if (canGoThrough(cell, inventory)) {
+            if (canGoThrough(cell, keys)) {
                 move(nextCell);
             }
         }
@@ -136,17 +137,17 @@ public abstract class Character implements Drawable {
         }
     }
 
-    private boolean canGoThrough(Cell cell, List<Item> inventory){
+    private boolean canGoThrough(Cell cell, ArrayList<Item> keys){
         if (cell.isLock()) {
             if (!isPlayer) {
                 System.out.println("Monsters can't go through doors");
                 return false;
             } else {
                 Lock lock = cell.getLock();
-                for (int i = 0; i < inventory.size(); i++) {
-                    if (inventory.get(i).getType() == ItemType.UTILITY && inventory.get(i).getDetail().matches("[a-z]+ key")) {
-                        lock.attemptOpen((Key) inventory.get(i));
-                        System.out.println("Try key: " + inventory.get(i));
+                for (int i = 0; i < keys.size(); i++) {
+                    if (keys.get(i).getType() == ItemType.KEY) {
+                        lock.attemptOpen((Key) keys.get(i));
+                        System.out.println("Try key: " + keys.get(i));
                         if (lock.isOpen()) {
                             System.out.println("Sesame unfold!");
                             return true;

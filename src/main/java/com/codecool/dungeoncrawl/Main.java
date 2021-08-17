@@ -234,7 +234,7 @@ public class Main extends Application {
         }
         logs.setText(tmp);
 
-        if (map.getPlayer().getCell().getItem() == null) { // TODO: add items to cells
+        if (map.getPlayer().getCell().getItem() == null) {
             canvas.requestFocus();
         } else {
             logging.add("I'm standing on an item! Let's pick it up!");
