@@ -213,7 +213,8 @@ public class Main extends Application {
         inventorySize += inventory.get(ItemType.KEY).size();
         inventorySize += inventory.get(ItemType.UTILITY).size();
 
-        String tmp = String.format(" (%d):", inventorySize);
+        String invTitle = String.format("Inventory (%d):", inventorySize);
+        String tmp = "";
         Set<ItemType> setOfKeySet = inventory.keySet();
         for (ItemType key: setOfKeySet) {
             ArrayList value = inventory.get(key);
@@ -222,6 +223,7 @@ public class Main extends Application {
                 tmp += String.format("\t\t%s\n", ((ArrayList<Item>) value).get(i).getDetail());
             }
         }
+        invLabel.setText(invTitle);
         invItems.setText(tmp);
         tmp = "";
         if(logging.size() > 5){
