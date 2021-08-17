@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
+import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.GameMap;
@@ -110,22 +111,21 @@ public abstract class Character implements Drawable {
             if (this.isPlayer && this.health <= 0 || victim.isPlayer && victim.health <= 0) {
                 // dies if HP 0 (should change to < 0 later)
                 // TODO: Game Over!
-                System.out.println("You died");
+                Main.logging.add("Our hero has perished and their corpse will now be desiccated and mutilated and eaten."); // add rainbow emoji
+                System.out.println("You ded lol");
                 //System.exit(0);
             }
             if(!victim.isPlayer && victim.health <= 0){
                 victim.cell.setActor(null);
-                System.out.println("You have slayed your foe!");
+                Main.logging.add("You have slayed your foe!");
             }
         }
         if (this.isPlayer) { // TODO display in window
-            System.out.println("Your valiant onslaught has brought you to " + this.health + "HP.");
-            System.out.println("Whilst you have brought your enemy to " + victim.health + "HP.");
-            System.out.println();
+            Main.logging.add("Your valiant onslaught has brought you to " + this.health + "HP.  " +
+                    "Whilst you have brought your enemy to " + victim.health + "HP.");
         } else {
-            System.out.println("Their fiendish attack has brought you to " + victim.health + "HP.");
-            System.out.println("But it has cost them dearly, they are only at " + this.health + "HP now.");
-            System.out.println();
+            Main.logging.add("Their fiendish attack has brought you to " + victim.health + "HP.  " +
+                    "But it has cost them dearly, they are only at " + this.health + "HP now.");
         }
     }
 }
