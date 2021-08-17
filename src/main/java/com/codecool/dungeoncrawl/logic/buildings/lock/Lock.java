@@ -7,10 +7,11 @@ import com.codecool.dungeoncrawl.logic.items.utility.Key;
 
 import static java.lang.Integer.parseInt;
 
-public class Lock extends Obstacle {
+public abstract class Lock extends Obstacle {
     private int level;
     private String detail; // stair -> the level it leads to // other -> detailed explanation
     private LockType type;
+    protected boolean passable;
 
     public Lock(Cell cell, int level, String detail, LockType type) {
         super(cell, ObstacleType.LOCK);
@@ -18,6 +19,7 @@ public class Lock extends Obstacle {
         this.level = level;
         this.detail = detail;
         this.type = type;
+        passable = false;
         //setTileName();
     }
 

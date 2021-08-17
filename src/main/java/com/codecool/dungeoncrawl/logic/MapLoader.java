@@ -1,7 +1,10 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.buildings.lock.Chest;
+import com.codecool.dungeoncrawl.logic.buildings.lock.Door;
 import com.codecool.dungeoncrawl.logic.buildings.lock.Lock;
+import com.codecool.dungeoncrawl.logic.buildings.lock.Stair;
 import com.codecool.dungeoncrawl.logic.items.defence.Armor;
 import com.codecool.dungeoncrawl.logic.items.defence.ArmorType;
 import com.codecool.dungeoncrawl.logic.items.offence.Weapon;
@@ -69,16 +72,16 @@ public class MapLoader {
                             new Armor(cell, ArmorType.SHIELD);
                             break;
                         case 'd':
-                            cell.setType(CellType.LOCK);
-                            new Lock(cell, 1, "only", DOOR); // TODO: resolve magic number
+                            cell.setType(CellType.DOOR);
+                            new Door(cell, 1, "only"); // TODO: resolve magic number
                             break;
                         case 'l':
-                            cell.setType(CellType.LOCK);
-                            new Lock(cell, 1, "2", STAIR);
+                            cell.setType(CellType.STAIR);
+                            new Stair(cell, 1, "2");
                             break;
                         case 'c':
-                            cell.setType(CellType.LOCK);
-                            new Lock(cell, 1, "2", CHEST);
+                            cell.setType(CellType.CHEST);
+                            new Chest(cell, 1, "2");
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

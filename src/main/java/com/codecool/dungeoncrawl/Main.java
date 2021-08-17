@@ -243,7 +243,7 @@ public class Main extends Application {
     }
 
     private boolean canGoThroughDoor(Cell cell){
-        if (cell.getType() == CellType.LOCK) {
+        if (cell.getType() == CellType.DOOR || cell.getType() == CellType.STAIR || cell.getType() == CellType.CHEST) {
             Lock lock = cell.getLock();
             for (int i = 0; i < inventory.size(); i++) {
                 if (inventory.get(i).getType() == ItemType.UTILITY && inventory.get(i).getDetail().matches("[a-z]+ key")) {

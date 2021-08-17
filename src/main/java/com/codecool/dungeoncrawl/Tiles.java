@@ -34,15 +34,9 @@ public class Tiles {
         tileMap.put("muzzy", new Tile(30, 6));
         tileMap.put("marching", new Tile(29, 6));
 
-        tileMap.put("door", new Tile(3, 9)); //simplified
-        //tileMap.put("stair", new Tile(7, 6)); // simplified
-
-        /*tileMap.put("open-door", new Tile(6, 9));
-        tileMap.put("closed-door", new Tile(3, 9));
-        tileMap.put("open-chest", new Tile(7, 6));
-        tileMap.put("closed-chest", new Tile(7, 6));
-        tileMap.put("stair-up", new Tile(2, 6));
-        tileMap.put("stair-down", new Tile(3, 6));*/
+        tileMap.put("door", new Tile(6, 9));
+        tileMap.put("chest", new Tile(7, 6));
+        tileMap.put("stair", new Tile(2, 6));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
