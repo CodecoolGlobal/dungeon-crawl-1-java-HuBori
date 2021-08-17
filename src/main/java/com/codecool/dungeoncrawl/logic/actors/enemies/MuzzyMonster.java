@@ -11,7 +11,6 @@ public class MuzzyMonster extends Monster { // immobile
         maxHealth = 30;
         defense = 10;
         attack = 10;
-        health = maxHealth;
     }
 
     @Override

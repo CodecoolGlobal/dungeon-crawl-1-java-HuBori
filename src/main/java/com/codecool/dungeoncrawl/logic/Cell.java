@@ -29,6 +29,13 @@ public class Cell implements Drawable {
         this.actor = actor;
     }
 
+    public void setItem(Item item) {
+        if (this.item != null) {
+            throw new IndexOutOfBoundsException("You can NOT place multiple items on the same cell!");
+        }
+        this.item = item;
+    }
+
     public Character getActor() {
         return actor;
     }

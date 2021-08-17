@@ -14,7 +14,6 @@ public class MarchingMonster extends Monster { // moves back and forth
         maxHealth = 10;
         defense = 5;
         attack = 5;
-        health = maxHealth;
         determineFacing();
     }
 

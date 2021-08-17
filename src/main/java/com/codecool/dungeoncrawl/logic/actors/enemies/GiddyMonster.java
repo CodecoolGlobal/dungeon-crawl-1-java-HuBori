@@ -12,7 +12,6 @@ public class GiddyMonster extends Monster { // moves randomly
         maxHealth = 5;
         defense = 0;
         attack = 5;
-        health = maxHealth;
     }
 
     @Override
