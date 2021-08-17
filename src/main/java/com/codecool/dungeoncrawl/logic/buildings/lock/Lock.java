@@ -1,5 +1,7 @@
 package com.codecool.dungeoncrawl.logic.buildings.lock;
 
+import com.codecool.dungeoncrawl.logic.items.utility.Key;
+
 public class Lock {
     private int level;
     private String detail;
@@ -29,7 +31,9 @@ public class Lock {
         return type;
     }
 
-    public void setOpen(boolean open) {
-        this.open = open;
+    public void attemptOpen(Key key) {
+        if (key.getLevel() == level && key.getSubType() == type.getKey() && key.getDetail() == detail) {
+            this.open = true;
+        }
     }
 }

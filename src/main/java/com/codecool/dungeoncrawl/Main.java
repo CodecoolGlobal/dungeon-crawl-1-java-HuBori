@@ -4,10 +4,13 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.buildings.lock.Lock;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.defence.ArmorType;
 import com.codecool.dungeoncrawl.logic.items.offence.WeaponType;
 
+import com.codecool.dungeoncrawl.logic.items.utility.Key;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -95,25 +98,25 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() - 1);
-                if (cell.getType() != CellType.WALL) {
+                if (cell.getType() != CellType.WALL && canGoThroughDoor(cell)) {
                     map.getPlayer().tryMove(0, -1);
                 }
                 break;
             case DOWN:
                 cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() + 1);
-                if (cell.getType() != CellType.WALL) {
+                if (cell.getType() != CellType.WALL && canGoThroughDoor(cell)) {
                     map.getPlayer().tryMove(0, 1);
                 }
                 break;
             case LEFT:
                 cell = map.getCell(map.getPlayer().getX() - 1, map.getPlayer().getY());
-                if (cell.getType() != CellType.WALL) {
+                if (cell.getType() != CellType.WALL && canGoThroughDoor(cell)) {
                     map.getPlayer().tryMove(-1, 0);
                 }
                 break;
             case RIGHT:
                 cell = map.getCell(map.getPlayer().getX() + 1, map.getPlayer().getY());
-                if (cell.getType() != CellType.WALL) {
+                if (cell.getType() != CellType.WALL && canGoThroughDoor(cell)) {
                     map.getPlayer().tryMove(1, 0);
                 }
                 break;
@@ -161,5 +164,21 @@ public class Main extends Application {
                 }
             }
         }
+    }
+
+    private boolean canGoThroughDoor(Cell cell){
+        if (cell.getType() == CellType.LOCK) {
+            Lock lock = cell.getLock();
+            for (int i = 0; i < inventory.size(); i++) {
+                if (inventory.get(i).getType() == ItemType.UTILITY && inventory.get(i).getDetail().matches("[a-z]+ key")) {
+                    lock.attemptOpen((Key) inventory.get(i));
+                    if (lock.isOpen()) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        return true;
     }
 }
