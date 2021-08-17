@@ -64,6 +64,15 @@ public class Cell implements Drawable {
         return lock;
     }
 
+    public boolean isLock() {
+        switch (type) {
+            case DOOR: return true;
+            case CHEST: return true;
+            case STAIR: return true;
+            default: return false;
+        }
+    }
+
     public void setLock(Lock lock) {
         this.lock = lock;
     }

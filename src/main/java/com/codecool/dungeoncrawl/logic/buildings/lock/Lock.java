@@ -5,8 +5,6 @@ import com.codecool.dungeoncrawl.logic.buildings.Obstacle;
 import com.codecool.dungeoncrawl.logic.buildings.ObstacleType;
 import com.codecool.dungeoncrawl.logic.items.utility.Key;
 
-import static java.lang.Integer.parseInt;
-
 public abstract class Lock extends Obstacle {
     private int level;
     private String detail; // stair -> the level it leads to // other -> detailed explanation
@@ -20,7 +18,6 @@ public abstract class Lock extends Obstacle {
         this.detail = detail;
         this.type = type;
         passable = false;
-        //setTileName();
     }
 
     public boolean isOpen() {
@@ -31,21 +28,16 @@ public abstract class Lock extends Obstacle {
         return type;
     }
 
-    public void attemptOpen(Key key) { // TODO: for chest, something needs to be dropped when opened (later feature)
+    public void attemptOpen(Key key) { // TODO: make it part of player move instead of Main
+        System.out.println("There is a lock '" + detail + "' here. Let's open it!");
+        System.out.println("Let's try key '" + key.getDetail() + "' into it!");
         if (key.getLevel() == level && key.getSubType() == type.getKey() && key.getDetail() == detail) {
             this.passable = true;
+            System.out.println("The lock is opened");
+        } else {
+            System.out.println("This key doesn't fit");
         }
     }
-
-    /*private void setTileName() {
-        String name = (passable) ? "open-" : "closed-";
-        switch (type){
-            case DOOR: tileName = name + "door";
-            case CHEST: tileName = name + "chest";
-            case STAIR: tileName = "stair-" + ((parseInt(detail) > level) ? "up" : "down");
-            default: throw new ClassCastException("No such lock handled");
-        }
-    }*/
 
     @Override
     public String getTileName() {

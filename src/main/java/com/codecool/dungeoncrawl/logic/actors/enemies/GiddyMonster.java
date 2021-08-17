@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class GiddyMonster extends Monster { // moves randomly
@@ -27,7 +28,7 @@ public class GiddyMonster extends Monster { // moves randomly
         while(true) {
             Cell cell = map.getCell(this.getX() + directions[randInt][0], this.getY() + directions[randInt][1]);
             if (cell.getType() != CellType.WALL && cell.getActor() == null) {
-                this.tryMove(directions[randInt][0], directions[randInt][1]);
+                this.tryMove(directions[randInt][0], directions[randInt][1], null);
                 break;
             }
             randInt = rand.nextInt(3);

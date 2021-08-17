@@ -8,6 +8,7 @@ import com.codecool.dungeoncrawl.logic.buildings.lock.Lock;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 
+import com.codecool.dungeoncrawl.logic.items.defence.Armor;
 import com.codecool.dungeoncrawl.logic.items.utility.Key;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -27,7 +28,9 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Main extends Application {
     private GameMap map = MapLoader.loadMap();
@@ -40,7 +43,12 @@ public class Main extends Application {
     private Label maxHPLabel = new Label();
     private Label attackLabel = new Label();
     private Label defenseLabel = new Label();
-    private List<Item> inventory = new ArrayList<>();
+    private Map<ItemType, ArrayList<Item>> inventory = new HashMap<>() {
+        {
+            put(ItemType.ARMOR, new ArrayList<>());
+            put(ItemType.WEAPON, new ArrayList<>());
+            put(ItemType.UTILITY, new ArrayList<>());
+        }};
     private Label invLabel = new Label("Inventory:" + "\n");
     private Label invItems = new Label("");
     public static List<String> logging = new ArrayList<>();
@@ -57,7 +65,7 @@ public class Main extends Application {
             public void handle(ActionEvent click) {
                 Item item = map.getPlayer().getCell().getItem();
                 if (item != null) {
-                    item.pickUp(inventory, map);
+                    item.pickUp(inventory.get(item.getType()), map);
                     System.out.println("You picked up a(n) " + item.getDetail() + "!");
                     refresh();
                 }
@@ -146,7 +154,6 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
         refresh();
-        //scene.setOnKeyPressed(this::onKeyPressed);
         btn.setOnAction(handler);
 
         primaryStage.setTitle("Dungeon Crawl");
@@ -159,26 +166,26 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() - 1);
-                if (cell.getType() != CellType.WALL && canGoThroughDoor(cell)) {
-                    map.getPlayer().tryMove(0, -1);
+                if (cell.getType() != CellType.WALL) {
+                    map.getPlayer().tryMove(0, -1, inventory.get(ItemType.UTILITY));
                 }
                 break;
             case DOWN:
                 cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() + 1);
-                if (cell.getType() != CellType.WALL && canGoThroughDoor(cell)) {
-                    map.getPlayer().tryMove(0, 1);
+                if (cell.getType() != CellType.WALL) {
+                    map.getPlayer().tryMove(0, 1, inventory.get(ItemType.UTILITY));
                 }
                 break;
             case LEFT:
                 cell = map.getCell(map.getPlayer().getX() - 1, map.getPlayer().getY());
-                if (cell.getType() != CellType.WALL && canGoThroughDoor(cell)) {
-                    map.getPlayer().tryMove(-1, 0);
+                if (cell.getType() != CellType.WALL) {
+                    map.getPlayer().tryMove(-1, 0, inventory.get(ItemType.UTILITY));
                 }
                 break;
             case RIGHT:
                 cell = map.getCell(map.getPlayer().getX() + 1, map.getPlayer().getY());
-                if (cell.getType() != CellType.WALL && canGoThroughDoor(cell)) {
-                    map.getPlayer().tryMove(1, 0);
+                if (cell.getType() != CellType.WALL) {
+                    map.getPlayer().tryMove(1, 0, inventory.get(ItemType.UTILITY));
                 }
                 break;
         }
@@ -208,7 +215,8 @@ public class Main extends Application {
         defenseLabel.setText("" + map.getPlayer().getDefense());
 
         String tmp = "";
-        for (int i = 0; i < inventory.size(); i++) {
+        int inventorySize = inventory.get(ItemType.ARMOR).size() + inventory.get(ItemType.WEAPON).size() + inventory.get(ItemType.UTILITY).size();
+        for (int i = 0; i < inventorySize; i++) {
             tmp += inventory.get(i) + "\n";
         }
         invItems.setText(tmp);
@@ -222,7 +230,6 @@ public class Main extends Application {
         logs.setText(tmp);
 
         if (map.getPlayer().getCell().getItem() == null) { // TODO: add items to cells
-            // TODO: fix bug
             canvas.requestFocus();
         } else {
             logging.add("I'm standing on an item! Let's pick it up!");
@@ -240,21 +247,5 @@ public class Main extends Application {
                 }
             }
         }
-    }
-
-    private boolean canGoThroughDoor(Cell cell){
-        if (cell.getType() == CellType.DOOR || cell.getType() == CellType.STAIR || cell.getType() == CellType.CHEST) {
-            Lock lock = cell.getLock();
-            for (int i = 0; i < inventory.size(); i++) {
-                if (inventory.get(i).getType() == ItemType.UTILITY && inventory.get(i).getDetail().matches("[a-z]+ key")) {
-                    lock.attemptOpen((Key) inventory.get(i));
-                    if (lock.isOpen()) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-        return true;
     }
 }
