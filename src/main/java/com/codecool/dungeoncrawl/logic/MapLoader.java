@@ -1,10 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
 import com.codecool.dungeoncrawl.logic.buildings.lock.Lock;
-import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.defence.Armor;
 import com.codecool.dungeoncrawl.logic.items.defence.ArmorType;
 import com.codecool.dungeoncrawl.logic.items.offence.Weapon;
@@ -73,7 +70,7 @@ public class MapLoader {
                             break;
                         case 'd':
                             cell.setType(CellType.LOCK);
-                            new Lock(cell, 1, "only", DOOR);
+                            new Lock(cell, 1, "only", DOOR); // TODO: resolve magic number
                             break;
                         case 'l':
                             cell.setType(CellType.LOCK);

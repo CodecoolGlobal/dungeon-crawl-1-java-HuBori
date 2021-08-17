@@ -1,11 +1,15 @@
 package com.codecool.dungeoncrawl.logic.buildings;
 
-public class Wall implements Obstacle{
-    public Wall() {
+import com.codecool.dungeoncrawl.logic.Cell;
+
+public class Wall extends Obstacle{
+    public Wall(Cell cell) {
+        super(cell, ObstacleType.WALL);
+        tileName = "wall";
     }
 
     @Override
     public String getTileName() {
-        return "wall";
+        return tileName;
     }
 }
