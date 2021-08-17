@@ -15,5 +15,14 @@ abstract public class Monster extends Character {
         return "default";
     }
 
+    @Override
+    public void setHealth(int modify) {
+        if (getHealth() + modify < 0) {
+            getCell().setActor(null);
+        } else {
+            super.setHealth(modify);
+        }
+    }
+
     abstract public void monsterMove(GameMap map);
 }

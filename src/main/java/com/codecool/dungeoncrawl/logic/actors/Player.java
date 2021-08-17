@@ -15,5 +15,22 @@ public class Player extends Character {
         return "player";
     }
 
+    public void setDefense(int modify) {
+        defense = (defense + modify < 0) ? 0 : defense + modify;
+    }
+
+    public void setAttack(int modify) {
+        attack = (attack + modify < 0) ? 0 : attack + modify;
+    }
+
+    @Override
+    public void setHealth(int modify) {
+        if (getHealth() + modify < 0) {
+            System.out.println("Game Over"); // TODO: Implement it
+        } else {
+            super.setHealth(modify);
+        }
+    }
+
     public void monsterMove(GameMap map) {}
 }
