@@ -34,8 +34,8 @@ public class Tiles {
         tileMap.put("muzzy", new Tile(30, 6));
         tileMap.put("marching", new Tile(29, 6));
 
-        tileMap.put("door", new Tile(6, 9));
-        tileMap.put("chest", new Tile(7, 6));
+        tileMap.put("door", new Tile(5, 9));
+        tileMap.put("chest", new Tile(8, 6));
         tileMap.put("stair", new Tile(2, 6));
     }
 
