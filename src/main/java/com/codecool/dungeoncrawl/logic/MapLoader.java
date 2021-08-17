@@ -3,20 +3,17 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.buildings.lock.Chest;
 import com.codecool.dungeoncrawl.logic.buildings.lock.Door;
-import com.codecool.dungeoncrawl.logic.buildings.lock.Lock;
 import com.codecool.dungeoncrawl.logic.buildings.lock.Stair;
 import com.codecool.dungeoncrawl.logic.items.defence.Armor;
 import com.codecool.dungeoncrawl.logic.items.defence.ArmorType;
 import com.codecool.dungeoncrawl.logic.items.offence.Weapon;
 import com.codecool.dungeoncrawl.logic.items.offence.WeaponType;
-import com.codecool.dungeoncrawl.logic.items.utility.Key;
-import com.codecool.dungeoncrawl.logic.items.utility.KeyType;
+import com.codecool.dungeoncrawl.logic.items.key.Key;
+import com.codecool.dungeoncrawl.logic.items.key.KeyType;
 import com.codecool.dungeoncrawl.logic.actors.enemies.*;
 
 import java.io.InputStream;
 import java.util.Scanner;
-
-import static com.codecool.dungeoncrawl.logic.buildings.lock.LockType.*;
 
 public class MapLoader {
     public static GameMap loadMap() {

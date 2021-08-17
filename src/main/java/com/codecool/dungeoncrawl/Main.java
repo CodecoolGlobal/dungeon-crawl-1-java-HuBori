@@ -4,12 +4,9 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.buildings.lock.Lock;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 
-import com.codecool.dungeoncrawl.logic.items.defence.Armor;
-import com.codecool.dungeoncrawl.logic.items.utility.Key;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,13 +21,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Main extends Application {
     private GameMap map = MapLoader.loadMap();
@@ -47,9 +40,10 @@ public class Main extends Application {
         {
             put(ItemType.ARMOR, new ArrayList<>());
             put(ItemType.WEAPON, new ArrayList<>());
+            put(ItemType.KEY, new ArrayList<>());
             put(ItemType.UTILITY, new ArrayList<>());
         }};
-    private Label invLabel = new Label("Inventory:" + "\n");
+    private Label invLabel = new Label("Inventory");
     private Label invItems = new Label("");
     public static List<String> logging = new ArrayList<>();
     private Label logs = new Label("");
@@ -167,25 +161,25 @@ public class Main extends Application {
             case UP:
                 cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() - 1);
                 if (cell.getType() != CellType.WALL) {
-                    map.getPlayer().tryMove(0, -1, inventory.get(ItemType.UTILITY));
+                    map.getPlayer().tryMove(0, -1, inventory.get(ItemType.KEY));
                 }
                 break;
             case DOWN:
                 cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() + 1);
                 if (cell.getType() != CellType.WALL) {
-                    map.getPlayer().tryMove(0, 1, inventory.get(ItemType.UTILITY));
+                    map.getPlayer().tryMove(0, 1, inventory.get(ItemType.KEY));
                 }
                 break;
             case LEFT:
                 cell = map.getCell(map.getPlayer().getX() - 1, map.getPlayer().getY());
                 if (cell.getType() != CellType.WALL) {
-                    map.getPlayer().tryMove(-1, 0, inventory.get(ItemType.UTILITY));
+                    map.getPlayer().tryMove(-1, 0, inventory.get(ItemType.KEY));
                 }
                 break;
             case RIGHT:
                 cell = map.getCell(map.getPlayer().getX() + 1, map.getPlayer().getY());
                 if (cell.getType() != CellType.WALL) {
-                    map.getPlayer().tryMove(1, 0, inventory.get(ItemType.UTILITY));
+                    map.getPlayer().tryMove(1, 0, inventory.get(ItemType.KEY));
                 }
                 break;
         }
@@ -214,10 +208,19 @@ public class Main extends Application {
         attackLabel.setText("" + map.getPlayer().getAttack());
         defenseLabel.setText("" + map.getPlayer().getDefense());
 
-        String tmp = "";
-        int inventorySize = inventory.get(ItemType.ARMOR).size() + inventory.get(ItemType.WEAPON).size() + inventory.get(ItemType.UTILITY).size();
-        for (int i = 0; i < inventorySize; i++) {
-            tmp += inventory.get(i) + "\n";
+        int inventorySize = inventory.get(ItemType.ARMOR).size();
+        inventorySize += inventory.get(ItemType.WEAPON).size();
+        inventorySize += inventory.get(ItemType.KEY).size();
+        inventorySize += inventory.get(ItemType.UTILITY).size();
+
+        String tmp = String.format(" (%d):", inventorySize);
+        Set<ItemType> setOfKeySet = inventory.keySet();
+        for (ItemType key: setOfKeySet) {
+            ArrayList value = inventory.get(key);
+            tmp += String.format("\n\t%s (%d):\n", key.toString().toLowerCase(), value.size());
+            for (int i = 0; i < value.size(); i++) {
+                tmp += String.format("\t\t%s\n", ((ArrayList<Item>) value).get(i).getDetail());
+            }
         }
         invItems.setText(tmp);
         tmp = "";

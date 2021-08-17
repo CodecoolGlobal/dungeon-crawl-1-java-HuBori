@@ -2,14 +2,12 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
 import com.codecool.dungeoncrawl.logic.buildings.lock.Lock;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
-import com.codecool.dungeoncrawl.logic.items.utility.Key;
+import com.codecool.dungeoncrawl.logic.items.key.Key;
 
 import java.util.List;
 

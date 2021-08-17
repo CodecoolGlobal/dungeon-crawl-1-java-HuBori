@@ -3,7 +3,7 @@ package com.codecool.dungeoncrawl.logic.buildings.lock;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.buildings.Obstacle;
 import com.codecool.dungeoncrawl.logic.buildings.ObstacleType;
-import com.codecool.dungeoncrawl.logic.items.utility.Key;
+import com.codecool.dungeoncrawl.logic.items.key.Key;
 
 public abstract class Lock extends Obstacle {
     private int level;

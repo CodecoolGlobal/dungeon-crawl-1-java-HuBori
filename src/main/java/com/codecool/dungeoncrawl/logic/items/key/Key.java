@@ -1,4 +1,4 @@
-package com.codecool.dungeoncrawl.logic.items.utility;
+package com.codecool.dungeoncrawl.logic.items.key;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Item;
@@ -10,7 +10,7 @@ public class Key extends Item {
 	private String detail;
 
 	public Key(Cell cell, KeyType type, int level, String detail) {
-		super(cell, ItemType.UTILITY, type.toString().toLowerCase() + " key");
+		super(cell, ItemType.KEY, type.toString().toLowerCase() + " key");
 		this.subType = type;
 		this.level = level;
 		this.detail = detail;

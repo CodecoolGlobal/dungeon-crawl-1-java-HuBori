@@ -1,6 +1,6 @@
 package com.codecool.dungeoncrawl.logic.buildings.lock;
 
-import com.codecool.dungeoncrawl.logic.items.utility.KeyType;
+import com.codecool.dungeoncrawl.logic.items.key.KeyType;
 
 public enum LockType {
     DOOR(KeyType.BRONSE),
