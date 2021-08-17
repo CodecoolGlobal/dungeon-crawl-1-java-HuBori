@@ -22,6 +22,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -48,7 +49,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
-        ui.setPadding(new Insets(10));
+        ui.setMaxHeight(100);
+        ui.setPadding(new Insets(15));
 
         btn.setText("Pick up");
         EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
@@ -73,9 +75,19 @@ public class Main extends Application {
         ui.add(new Label("Defense: "), 0, 3);
         ui.add(defenseLabel, 1, 3);
 
+        for (int i = 0; i < inventory.size(); i++) {
+            Label item = new Label();
+            item.setText(this.inventory.get(i).getType().name());
+            ui.add(item,0,3+i);
+        }
+
+        ui.setStyle("-fx-border-color: #9f9f9f;" +
+                "-fx-border-width: 2px");
+
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
+        borderPane.setStyle("-fx-background-color: #64465a");
         borderPane.setRight(ui);
 
         Scene scene = new Scene(borderPane);
