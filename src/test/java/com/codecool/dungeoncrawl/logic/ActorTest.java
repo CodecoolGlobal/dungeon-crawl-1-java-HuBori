@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.enemies.MarchingMonster;
+import com.codecool.dungeoncrawl.logic.actors.enemies.MuzzyMonster;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,13 +43,13 @@ class ActorTest {
     @Test
     void cannotMoveIntoAnotherActor() {
         Player player = new Player(gameMap.getCell(1, 1));
-        MarchingMonster skeleton = new MarchingMonster(gameMap.getCell(2, 1));
+        MuzzyMonster golem = new MuzzyMonster(gameMap.getCell(2, 1));
         player.move(1, 0);
 
         assertEquals(1, player.getX());
         assertEquals(1, player.getY());
-        assertEquals(2, skeleton.getX());
-        assertEquals(1, skeleton.getY());
-        assertEquals(skeleton, gameMap.getCell(2, 1).getActor());
+        assertEquals(2, golem.getX());
+        assertEquals(1, golem.getY());
+        assertEquals(golem, gameMap.getCell(2, 1).getActor());
     }
 }

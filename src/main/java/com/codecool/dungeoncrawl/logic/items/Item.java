@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.items;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 
 public class Item {
     private ItemType type;
@@ -8,8 +9,14 @@ public class Item {
 	private Cell cell;
 
     public Item(Cell cell, ItemType type/*, String detail*/) {
-        this.cell = cell;
-        this.type = type;
-        //this.detail = detail;
+        if (cell != null) {
+            if (cell.getType() == CellType.FLOOR || cell.getType() == null) {
+                this.cell = cell;
+                this.type = type;
+                //this.detail = detail;
+            }
+        } else {
+            throw new ArrayStoreException("Items should only be placed on the floor!");
+        }
     }
 }
