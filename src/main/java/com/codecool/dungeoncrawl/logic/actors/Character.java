@@ -13,7 +13,7 @@ public abstract class Character implements Drawable {
     protected static int maxHealth;
     protected static int defense;
     protected static int attack;
-    private int health = 0;
+    protected int health = 0;
 
     public Character(Cell cell) {
         this.cell = cell;
@@ -47,6 +47,18 @@ public abstract class Character implements Drawable {
 
     public int getHealth() {
         return health;
+    }
+
+    public static int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public static int getDefense() {
+        return defense;
+    }
+
+    public static int getAttack() {
+        return attack;
     }
 
     public void setHealth(int modify) {

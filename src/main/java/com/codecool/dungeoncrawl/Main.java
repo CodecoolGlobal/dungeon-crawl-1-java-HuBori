@@ -35,6 +35,9 @@ public class Main extends Application {
     private Button btn = new Button();
     private GraphicsContext context = canvas.getGraphicsContext2D();
     private Label healthLabel = new Label();
+    private Label maxHPLabel = new Label();
+    private Label attackLabel = new Label();
+    private Label defenseLabel = new Label();
     private List<Item> inventory = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -54,6 +57,7 @@ public class Main extends Application {
                 if (item != null) {
                     item.pickUp(inventory, map);
                     System.out.println("You picked up a " + item.getDetail() + "!");
+                    refresh();
                 }
                 canvas.requestFocus();
             }
@@ -62,6 +66,12 @@ public class Main extends Application {
         ui.add(btn, 0, 0);
         ui.add(new Label("Health: "), 0, 1);
         ui.add(healthLabel, 1, 1);
+        ui.add(new Label("/"), 2, 1);
+        ui.add(maxHPLabel, 3, 1);
+        ui.add(new Label("Attack: "), 0, 2);
+        ui.add(attackLabel, 1, 2);
+        ui.add(new Label("Defense: "), 0, 3);
+        ui.add(defenseLabel, 1, 3);
 
         BorderPane borderPane = new BorderPane();
 
@@ -126,7 +136,12 @@ public class Main extends Application {
                 }
             }
         }
+
         healthLabel.setText("" + map.getPlayer().getHealth());
+        maxHPLabel.setText("" + map.getPlayer().getMaxHealth());
+        attackLabel.setText("" + map.getPlayer().getAttack());
+        defenseLabel.setText("" + map.getPlayer().getDefense());
+
         if (map.getPlayer().getCell().getItem() == null) { // TODO: add items to cells
             // TODO: fix bug
             canvas.requestFocus();
