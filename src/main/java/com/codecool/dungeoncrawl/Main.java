@@ -17,10 +17,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.input.MouseEvent;
@@ -37,22 +34,28 @@ import java.util.*;
 import static java.lang.Integer.parseInt;
 
 public class Main extends Application {
-    private Stage menuStage = new Stage();
     String[] mapFiles = new String[]{"level-1.txt", "level-2.txt", "level-3.txt"};
+    private int level = 1;
     private HashMap<Integer, GameMap> map = new HashMap<>() {{
         put(1, MapLoader.loadMap(mapFiles[0]));
         put(2, MapLoader.loadMap(mapFiles[1]));
         put(3, MapLoader.loadMap(mapFiles[2]));
     }};
+
     private Canvas canvas;
     private GraphicsContext context;
-    private Button btn = new Button();
+    private Stage menuStage = new Stage();
+
+    private Button pickUp = new Button("Pick up");
+    private CheckBox autoLoot = new CheckBox();
+
     private Label healthLabel = new Label();
     private Label maxHPLabel = new Label();
     private Label attackLabel = new Label();
     private Label defenseLabel = new Label();
-    private Button pickUp = new Button("Pick up");
     private ProgressBar healthBar = new ProgressBar(1);
+
+    private Label invItems = new Label("");
     private Label invLabel = new Label("Inventory:\n");
     private Map<ItemType, ArrayList<Item>> inventory = new HashMap<>() {
         {
@@ -62,10 +65,11 @@ public class Main extends Application {
             put(ItemType.UTILITY, new ArrayList<>());
         }
     };
-    private Label invItems = new Label("");
+
     public static List<String> logging = new ArrayList<>();
     private Label logs = new Label("");
-    private int level = 1;
+
+    private boolean cheatmode = false;
 
     public Main() throws IOException {
     }
@@ -93,17 +97,13 @@ public class Main extends Application {
             }
             canvas.requestFocus();
         });
-
 /*
-
         Button inGameMenu = new Button(" Menu ");
         buttonFormatter(inGameMenu);
         inGameMenu.setOnAction(e -> {
             //TODO popup window
         });
-
 */
-
 /*
         btn.setText("Pick up");
         EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
@@ -120,8 +120,8 @@ public class Main extends Application {
             }
         };
 */
-
         Label characterName = new Label(map.get(level).getPlayer().getName());
+        map.get(level).getPlayer().checkCheat(map.get(level).getPlayer().getName());
         characterName.setTextFill(Color.web("#FFB10A"));
         characterName.setStyle("-fx-font-weight: bold;" +
                 "-fx-font: 30 ani");
@@ -146,6 +146,9 @@ public class Main extends Application {
         stats.setPadding(new Insets(15));
 
         stats.getChildren().add(pickUp);
+        ;
+        stats.getChildren().add(new Label(" "));
+        stats.getChildren().add(autoLoot);
         //stats.getChildren().add(new Label("                 "));
         //stats.getChildren().add(inGameMenu); more complicated than thought, remains for next sprint
         stats.getChildren().add(new Label("           "));
@@ -333,25 +336,25 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 cell = map.get(level).getCell(map.get(level).getPlayer().getX(), map.get(level).getPlayer().getY() - 1);
-                if (cell.getType() != CellType.WALL && !map.get(level).getPlayer().isCheatmode()) {
+                if (cell.getType() != CellType.WALL || map.get(level).getPlayer().isCheatmode()) {
                     map.get(level).getPlayer().tryMove(0, -1, inventory.get(ItemType.KEY));
                 }
                 break;
             case DOWN:
                 cell = map.get(level).getCell(map.get(level).getPlayer().getX(), map.get(level).getPlayer().getY() + 1);
-                if (cell.getType() != CellType.WALL && !map.get(level).getPlayer().isCheatmode()) {
+                if (cell.getType() != CellType.WALL || map.get(level).getPlayer().isCheatmode()) {
                     map.get(level).getPlayer().tryMove(0, 1, inventory.get(ItemType.KEY));
                 }
                 break;
             case LEFT:
                 cell = map.get(level).getCell(map.get(level).getPlayer().getX() - 1, map.get(level).getPlayer().getY());
-                if (cell.getType() != CellType.WALL && !map.get(level).getPlayer().isCheatmode()) {
+                if (cell.getType() != CellType.WALL || map.get(level).getPlayer().isCheatmode()) {
                     map.get(level).getPlayer().tryMove(-1, 0, inventory.get(ItemType.KEY));
                 }
                 break;
             case RIGHT:
                 cell = map.get(level).getCell(map.get(level).getPlayer().getX() + 1, map.get(level).getPlayer().getY());
-                if (cell.getType() != CellType.WALL && !map.get(level).getPlayer().isCheatmode()) {
+                if (cell.getType() != CellType.WALL || map.get(level).getPlayer().isCheatmode()) {
                     map.get(level).getPlayer().tryMove(1, 0, inventory.get(ItemType.KEY));
                 }
                 break;
@@ -361,6 +364,35 @@ public class Main extends Application {
     }
 
     private void refresh() {
+        if (map.get(level).getPlayer().getCell().getType() == CellType.STAIRDOWN) {
+            level++;
+        }/* else if (map.get(level).getPlayer().getCell().getType() == CellType.STAIRUP || level > 1){
+            level--;
+        }*/
+
+/*
+        if (map.get(level).getPlayer().getHealth() <= 0) {
+            Main.logging.add("Our hero has perished and their corpse will now be desiccated and mutilated and eaten."); // add rainbow emoji
+            System.out.println("You ded lol");
+            //map.get(level) = MapLoader.loadMap("death.txt");
+            GameMap death = MapLoader.loadMap("death.txt");
+
+            context.setFill(Color.BLACK);
+            context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            for (int x = 0; x < map.get(level).getWidth(); x++) {
+                for (int y = 0; y < map.get(level).getHeight(); y++) {
+                    Cell cell = death.getCell(x, y);
+                    Tiles.drawTile(context, cell, x, y);
+                }
+            }
+            try {
+                this.wait(1000);
+            } catch (Exception e) {
+
+            }
+            System.exit(0);
+        }
+*/
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.get(level).getWidth(); x++) {
@@ -372,7 +404,6 @@ public class Main extends Application {
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
                 } else {
-                    System.out.println("\ncontent: " + cell.getType());
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
@@ -394,7 +425,7 @@ public class Main extends Application {
         Set<ItemType> setOfKeySet = inventory.keySet();
         for (ItemType key : setOfKeySet) {
             ArrayList value = inventory.get(key);
-            tmp += String.format("\n  %s (%d):\n", key.toString().toLowerCase(), value.size());
+            tmp += String.format("\n  %s (%d):\n", key.toString().toLowerCase(), value.size()); //TODO capitalize
             for (int i = 0; i < value.size(); i++) {
                 tmp += String.format("   %s\n", ((ArrayList<Item>) value).get(i).getDetail());
             }
@@ -402,9 +433,16 @@ public class Main extends Application {
 
         if (map.get(level).getPlayer().getCell().getItem() == null) {
             canvas.requestFocus();
+        } else if (autoLoot.isSelected()) {
+            Item item = map.get(level).getPlayer().getCell().getItem();
+            if (item != null) {
+                item.pickUp(inventory.get(ItemType.KEY), map.get(level));
+                logging.add("You picked up the legendary " + item.getDetail() + "!");
+                refresh();
+            }
         } else {
             logging.add("Do you want to pick up this marvelous artifact master?");
-            btn.requestFocus();
+            pickUp.requestFocus();
         }
         invLabel.setText(invTitle);
         invItems.setText(tmp);

@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.buildings.locks.Lock;
@@ -31,9 +32,9 @@ public abstract class Character implements Drawable {
         Cell nextCell = this.cell.getNeighbor(dx, dy);
         attackIfCan(nextCell);
         if (nextCell.getActor() == null) {
-                if (canGoThrough(nextCell, keys)) {
-                    move(nextCell);
-                }
+            //if (canGoThrough(nextCell, keys)) {
+                move(nextCell);
+            //}
 
         }
     }
@@ -119,11 +120,9 @@ public abstract class Character implements Drawable {
             if (this.isPlayer && this.health <= 0 || victim.isPlayer && victim.health <= 0) {
                 // dies if HP 0 (should change to < 0 later)
                 // TODO: Game Over!
-                Main.logging.add("Our hero has perished and their corpse will now be desiccated and mutilated and eaten."); // add rainbow emoji
-                System.out.println("You ded lol");
                 //System.exit(0);
             }
-            if(!victim.isPlayer && victim.health <= 0){
+            if (!victim.isPlayer && victim.health <= 0) {
                 victim.cell.setActor(null);
                 Main.logging.add("You have slayed your foe!");
             }
@@ -137,10 +136,9 @@ public abstract class Character implements Drawable {
         }
     }
 
-    private boolean canGoThrough(Cell cell, ArrayList<Item> keys){
+    private boolean canGoThrough(Cell cell, ArrayList<Item> keys) {
         if (cell.isLock()) {
             if (!isPlayer) {
-                System.out.println("Monsters can't go through doors");
                 return false;
             } else {
                 Lock lock = cell.getLock();

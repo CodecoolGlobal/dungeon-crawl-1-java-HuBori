@@ -40,11 +40,10 @@ public class MapLoader {
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
-        System.out.println("width: " + width + " height: "+ height);
 
         scanner.nextLine(); // empty line
 
-        int level = parseInt(filename.split("level-")[1].split(".txt")[0]);
+        int level = parseInt(filename.split("level")[1].split(".txt")[0]);
         GameMap map = new GameMap(level, width, height, CellType.EMPTY);
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();

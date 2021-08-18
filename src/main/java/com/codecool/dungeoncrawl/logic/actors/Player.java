@@ -16,10 +16,11 @@ public class Player extends Character {
         defense = 0; // modifiable by armors
         attack = 1; // modifiable by weapons; base attack 1 cause fists
         this.setHealth(this.maxHealth);
-        checkCheat(name);
+        //checkCheat(name);
     }
 
-    private void checkCheat(String name){
+    public void checkCheat(String name){
+        System.out.println(name);
         if(name.equals("Bori") || name.equals("Áron") || name.equals("Orodben")){
             cheatmode = true;
         }
