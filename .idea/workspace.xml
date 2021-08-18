@@ -6,14 +6,20 @@
   <component name="ChangeListManager">
     <list default="true" id="9be36b1e-40a9-4176-9959-9c73ac794402" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/logic/actors/Character.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/logic/actors/Character.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/logic/actors/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/logic/actors/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/codecool/dungeoncrawl/logic/actors/Character.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/codecool/dungeoncrawl/logic/actors/Character.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -30,14 +36,21 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/maps" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.526178" />
     <property name="settings.editor.selected.configurable" value="project.propCompiler" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/Tiles.java" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\én\Desktop\Codecool\OOP-Java\3rd_week\rougelike\src\main\resources\maps" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\én\Desktop\Codecool\OOP-Java\3rd_week\rougelike\src\main\resources\maps" />
+      <recent name="C:\Users\én\Desktop\Codecool\OOP-Java\3rd_week\rougelike\src\main\resources" />
       <recent name="C:\Users\én\Desktop\Codecool\OOP-Java\3rd_week\rougelike\uml\txt_versions" />
     </key>
   </component>
@@ -100,7 +113,9 @@
       <updated>1629095801554</updated>
       <workItem from="1629095806125" duration="13622000" />
       <workItem from="1629115558681" duration="9018000" />
-      <workItem from="1629181841289" duration="19125000" />
+      <workItem from="1629181841289" duration="31963000" />
+      <workItem from="1629227332173" duration="7739000" />
+      <workItem from="1629266277105" duration="21372000" />
     </task>
     <servers />
   </component>

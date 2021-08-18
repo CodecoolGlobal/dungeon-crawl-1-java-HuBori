@@ -1,12 +1,14 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Character;
+import com.codecool.dungeoncrawl.logic.buildings.locks.Lock;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 public class Cell implements Drawable {
     private CellType type;
     private Item item;
     private Character actor;
+    private Lock lock;
     private GameMap gameMap;
     private int x, y;
 
@@ -60,5 +62,23 @@ public class Cell implements Drawable {
 
     public Item getItem() {
         return item;
+    }
+
+    public Lock getLock() {
+        return lock;
+    }
+
+    public boolean isLock() {
+        switch (type) {
+            case DOOR: return true;
+            case CHEST: return true;
+            case STAIRDOWN: return true;
+            case STAIRUP: return true;
+            default: return false;
+        }
+    }
+
+    public void setLock(Lock lock) {
+        this.lock = lock;
     }
 }

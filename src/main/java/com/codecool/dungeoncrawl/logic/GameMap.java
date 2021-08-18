@@ -6,12 +6,14 @@ public class GameMap {
     private int width;
     private int height;
     private Cell[][] cells;
+    private int level;
 
     private Player player;
 
-    public GameMap(int width, int height, CellType defaultCellType) {
+    public GameMap(int level, int width, int height, CellType defaultCellType) {
         this.width = width;
         this.height = height;
+        this.level = level;
         cells = new Cell[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {

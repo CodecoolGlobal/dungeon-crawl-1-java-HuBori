@@ -6,8 +6,7 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.items.defence.ArmorType;
-import com.codecool.dungeoncrawl.logic.items.offence.WeaponType;
+import com.codecool.dungeoncrawl.logic.items.ItemType;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -27,23 +26,31 @@ import javafx.scene.layout.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
+
+import static java.lang.Integer.parseInt;
 
 public class Main extends Application {
     private GameMap map = MapLoader.loadMap();
-    private Canvas canvas = new Canvas(
+    /*private Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
-    private GraphicsContext context = canvas.getGraphicsContext2D();
+    private GraphicsContext context = canvas.getGraphicsContext2D();*/
     private Stage menuStage = new Stage();
+    String[] mapFiles = new String[] {"level-1.txt", "level-2.txt", "level-3.txt"};
+    private HashMap<Integer, GameMap> map = new HashMap<>() {{
+        put(1, MapLoader.loadMap(mapFiles[0]));
+        put(2, MapLoader.loadMap(mapFiles[1]));
+        put(3, MapLoader.loadMap(mapFiles[2]));
+    }};
+    private Canvas canvas;
+    private GraphicsContext context;
     private Label healthLabel = new Label();
     private Label maxHPLabel = new Label();
     private Label attackLabel = new Label();
@@ -51,10 +58,21 @@ public class Main extends Application {
     private Button pickUp = new Button("Pick up");
     private ProgressBar healthBar = new ProgressBar(1);
     private List<Item> inventory = new ArrayList<>();
-    private Label invLabel = new Label("Inventory:" + "\n");
+    private Label invLabel = new Label("Inventory:\n");
+    private Map<ItemType, ArrayList<Item>> inventory = new HashMap<>() {
+        {
+            put(ItemType.ARMOR, new ArrayList<>());
+            put(ItemType.WEAPON, new ArrayList<>());
+            put(ItemType.KEY, new ArrayList<>());
+            put(ItemType.UTILITY, new ArrayList<>());
+        }};
     private Label invItems = new Label("");
     public static List<String> logging = new ArrayList<>();
     private Label logs = new Label("");
+    private int level = 1;
+
+    public Main() throws IOException {
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -86,13 +104,18 @@ public class Main extends Application {
         });
 
 /*
+        canvas = new Canvas(map.get(level).getWidth() * Tiles.TILE_WIDTH, map.get(level).getHeight() * Tiles.TILE_WIDTH);
+        context = canvas.getGraphicsContext2D();
+
         btn.setText("Pick up");
         EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent click) {
-                Item item = map.getPlayer().getCell().getItem();
+                Item item = map.get(level).getPlayer().getCell().getItem();
                 if (item != null) {
                     item.pickUp(inventory, map);
                     System.out.println("You picked up the legendary " + item.getDetail() + "!");
+                    item.pickUp(inventory.get(item.getType()), map.get(level));
+                    System.out.println("You picked up a(n) " + item.getDetail() + "!");
                     refresh();
                 }
                 canvas.requestFocus();
@@ -173,7 +196,7 @@ public class Main extends Application {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
         refresh();
         //scene.setOnKeyPressed(this::onKeyPressed);
-        //btn.setOnAction(handler);
+        //btn.setOnAction(handler)
 
         primaryStage.setTitle("Java's lot");
         canvas.requestFocus();
@@ -313,27 +336,27 @@ public class Main extends Application {
         Cell cell;
         switch (keyEvent.getCode()) {
             case UP:
-                cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() - 1);
+                cell = map.get(level).getCell(map.get(level).getPlayer().getX(), map.get(level).getPlayer().getY() - 1);
                 if (cell.getType() != CellType.WALL) {
-                    map.getPlayer().tryMove(0, -1);
+                    map.get(level).getPlayer().tryMove(0, -1, inventory.get(ItemType.KEY));
                 }
                 break;
             case DOWN:
-                cell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY() + 1);
+                cell = map.get(level).getCell(map.get(level).getPlayer().getX(), map.get(level).getPlayer().getY() + 1);
                 if (cell.getType() != CellType.WALL) {
-                    map.getPlayer().tryMove(0, 1);
+                    map.get(level).getPlayer().tryMove(0, 1, inventory.get(ItemType.KEY));
                 }
                 break;
             case LEFT:
-                cell = map.getCell(map.getPlayer().getX() - 1, map.getPlayer().getY());
+                cell = map.get(level).getCell(map.get(level).getPlayer().getX() - 1, map.get(level).getPlayer().getY());
                 if (cell.getType() != CellType.WALL) {
-                    map.getPlayer().tryMove(-1, 0);
+                    map.get(level).getPlayer().tryMove(-1, 0, inventory.get(ItemType.KEY));
                 }
                 break;
             case RIGHT:
-                cell = map.getCell(map.getPlayer().getX() + 1, map.getPlayer().getY());
+                cell = map.get(level).getCell(map.get(level).getPlayer().getX() + 1, map.get(level).getPlayer().getY());
                 if (cell.getType() != CellType.WALL) {
-                    map.getPlayer().tryMove(1, 0);
+                    map.get(level).getPlayer().tryMove(1, 0, inventory.get(ItemType.KEY));
                 }
                 break;
         }
@@ -344,15 +367,16 @@ public class Main extends Application {
     private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
+        for (int x = 0; x < map.get(level).getWidth(); x++) {
+            for (int y = 0; y < map.get(level).getHeight(); y++) {
+                Cell cell = map.get(level).getCell(x, y);
                 if (cell.getActor() != null) {
                     cell.getActor().setHasMoved(false);
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
-                } else {
+                }else{
+                    System.out.println("\ncontent: " + cell.getType());
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
@@ -364,6 +388,11 @@ public class Main extends Application {
         attackLabel.setText("" + map.getPlayer().getAttack());
         defenseLabel.setText("" + map.getPlayer().getDefense());
 
+        int inventorySize = inventory.get(ItemType.ARMOR).size();
+        inventorySize += inventory.get(ItemType.WEAPON).size();
+        inventorySize += inventory.get(ItemType.KEY).size();
+        inventorySize += inventory.get(ItemType.UTILITY).size();
+
         if (map.getPlayer().getCell().getItem() == null) { // TODO: add items to cells
             // TODO: fix bug
             canvas.requestFocus();
@@ -373,10 +402,21 @@ public class Main extends Application {
             //btn.requestFocus();
         }
 
-        String tmp = "";
+        String tmp = ""; //making note for the commit, merge mostly done, fixing rest in ide then commit
         for (Item item : inventory) {
             tmp += item.getDetail() + "\n";
+
+        String invTitle = String.format("Inventory (%d):", inventorySize);
+        String tmp = "";
+        Set<ItemType> setOfKeySet = inventory.keySet();
+        for (ItemType key: setOfKeySet) {
+            ArrayList value = inventory.get(key);
+            tmp += String.format("\n\t%s (%d):\n", key.toString().toLowerCase(), value.size());
+            for (int i = 0; i < value.size(); i++) {
+                tmp += String.format("\t\t%s\n", ((ArrayList<Item>) value).get(i).getDetail());
+            }
         }
+        invLabel.setText(invTitle);
         invItems.setText(tmp);
         tmp = "";
         if(logging.size() > 5){
@@ -389,12 +429,12 @@ public class Main extends Application {
     }
 
     private void enemyMovement() {
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
+        for (int x = 0; x < map.get(level).getWidth(); x++) {
+            for (int y = 0; y < map.get(level).getHeight(); y++) {
+                Cell cell = map.get(level).getCell(x, y);
                 if (cell.getActor() != null && !cell.getActor().getHasMoved()) {
                     cell.getActor().setHasMoved(true);
-                    cell.getActor().monsterMove(map);
+                    cell.getActor().monsterMove(map.get(level));
                 }
             }
         }
