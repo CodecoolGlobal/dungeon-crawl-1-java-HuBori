@@ -40,6 +40,7 @@ public class MapLoader {
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
+        System.out.println("width: " + width + " height: "+ height);
 
         scanner.nextLine(); // empty line
 
@@ -50,12 +51,12 @@ public class MapLoader {
             for (int x = 0; x < width; x++) {
                 if (x < line.length()) {
                     Cell cell = map.getCell(x, y);
-                    if ("áéíóöőúüű".charAt(line.charAt(x)) != -1) { // TODO: why does it throw index error?
+                    if ("áéíóöőúüű".indexOf(line.charAt(x)) != -1) {
                         cell.setType(CellType.FLOOR);
                         new Key(cell, KeyType.BRONSE, level, doorTypes.get(line.charAt(x)));
-                    } else if ("ÁÉÍÓÖŐÚÜŰ".charAt(line.charAt(x)) != -1) {
+                    } else if ("ÁÉÍÓÖŐÚÜŰ".indexOf(line.charAt(x)) != -1) {
                         cell.setType(CellType.DOOR); // represent by ÁÉÍÓÖŐÚÜŰ (key pairs: áéíóöőúüű) -> max 9 door / floor (or same type)
-                        new Door(cell, level, doorTypes.get(line.charAt(x) - 'a' + 'A'));
+                        new Door(cell, level, doorTypes.get(Character.toLowerCase(line.charAt(x))));
                     } else {
                         switch (line.charAt(x)) {
                             case ' ':
@@ -80,7 +81,8 @@ public class MapLoader {
                                 new MuzzyMonster(cell);
                                 break;
                             case '@':
-                                cell.setType(CellType.FLOOR);
+                                cell.setType(CellType.STAIR);
+                                new StairDown(cell, level, String.valueOf(level-1));
                                 map.setPlayer(new Player(cell));
                                 break;
                             case 'k':

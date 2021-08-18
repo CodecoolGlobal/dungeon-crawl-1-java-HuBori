@@ -215,7 +215,7 @@ public class Main extends Application {
                     cell.getActor().setHasMoved(false);
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else {
-                    Tiles.drawTile(context, cell, x, y);
+                    Tiles.drawTile(context, cell, x, y); // TODO: cause of the problem: Not every map has players (...maybe?)
                 }
             }
         }
