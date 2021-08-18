@@ -4,6 +4,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 
 public class Player extends Character {
+    private String name = "you didn't care enough to name your character, eh? are you a dev or something?";
+
     public Player(Cell cell) {
         super(cell);
         this.isPlayer = true;
@@ -28,6 +30,14 @@ public class Player extends Character {
     @Override
     public void setHealth(int modify) {
         this.health = modify;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void monsterMove(GameMap map) {}
