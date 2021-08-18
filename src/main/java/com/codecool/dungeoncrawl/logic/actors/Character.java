@@ -31,9 +31,10 @@ public abstract class Character implements Drawable {
         Cell nextCell = this.cell.getNeighbor(dx, dy);
         attackIfCan(nextCell);
         if (nextCell.getActor() == null) {
-            if (canGoThrough(cell, keys)) {
-                move(nextCell);
-            }
+                if (canGoThrough(nextCell, keys)) {
+                    move(nextCell);
+                }
+
         }
     }
 
