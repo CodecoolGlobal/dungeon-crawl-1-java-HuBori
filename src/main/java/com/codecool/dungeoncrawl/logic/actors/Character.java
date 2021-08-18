@@ -144,6 +144,7 @@ public abstract class Character implements Drawable {
             } else {
                 Lock lock = cell.getLock();
                 for (int i = 0; i < keys.size(); i++) {
+                    System.out.println("Has a key");
                     if (keys.get(i).getType() == ItemType.KEY) {
                         lock.attemptOpen((Key) keys.get(i));
                         System.out.println("Try key: " + keys.get(i));

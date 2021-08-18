@@ -10,7 +10,7 @@ import com.codecool.dungeoncrawl.logic.items.offence.WeaponType;
 public class Chest extends Lock {
     private Item content;
 
-    public Chest(Cell cell, int level, String detail) {
+    public Chest(Cell cell, int level, String detail) { // TODO: enable opening
         super(cell, level, detail, LockType.CHEST);
         content = getRandomItem();
     }

@@ -22,7 +22,7 @@ import java.util.Scanner;
 public class MapLoader {
 
     public static GameMap loadMap(int level) {
-        Map<Character, String> keyTypes = new HashMap<>(){{
+        Map<Character, String> doorTypes = new HashMap<>(){{
             put('á', "storage");
             put('é', "dining room");
             put('í', "scriptory");
@@ -47,12 +47,12 @@ public class MapLoader {
             for (int x = 0; x < width; x++) {
                 if (x < line.length()) {
                     Cell cell = map.getCell(x, y);
-                    if ("áéíóöőúüű".charAt(line.charAt(x)) != -1) {
+                    if ("áéíóöőúüű".indexOf(line.charAt(x)) != -1) {
                         cell.setType(CellType.FLOOR);
-                        new Key(cell, KeyType.BRONSE, level, keyTypes.get(line.charAt(x)));
-                    } else if ("ÁÉÍÓÖŐÚÜŰ".charAt(line.charAt(x)) != -1) {
+                        new Key(cell, KeyType.BRONSE, level, doorTypes.get(line.charAt(x)));
+                    } else if ("ÁÉÍÓÖŐÚÜŰ".indexOf(line.charAt(x)) != -1) {
                         cell.setType(CellType.DOOR); // represent by ÁÉÍÓÖŐÚÜŰ (key pairs: áéíóöőúüű) -> max 9 door / floor (or same type)
-                        new Door(cell, level, keyTypes.get(line.charAt(x) - 'a' + 'A'));
+                        new Door(cell, level, doorTypes.get(Character.toLowerCase(line.charAt(x))));
                     } else {
                         switch (line.charAt(x)) {
                             case ' ':
