@@ -81,4 +81,13 @@ public class Cell implements Drawable {
     public void setLock(Lock lock) {
         this.lock = lock;
     }
+
+    public void setCell(Cell cell) {
+        type = cell.getType();
+        item = cell.getItem();
+        actor = cell.getActor();
+        lock = cell.getLock();
+        x = cell.getX();
+        y = cell.getY();
+    }
 }

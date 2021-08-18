@@ -44,6 +44,8 @@ public class Main extends Application {
         put(2, MapLoader.loadMap(mapFiles[1]));
         put(3, MapLoader.loadMap(mapFiles[2]));
     }};
+    private View view;
+    private GameMap scenery;
     private Canvas canvas;
     private GraphicsContext context;
     private Button btn = new Button();
@@ -75,10 +77,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        canvas = new Canvas(map.get(level).getWidth() * Tiles.TILE_WIDTH, map.get(level).getHeight() * Tiles.TILE_WIDTH);
-        context = canvas.getGraphicsContext2D();
         menuStage.setTitle("Java's lot");
         menu();
+
+        view = new View(map.get(level), level);
+        scenery = view.getScenery();
+        canvas = new Canvas(scenery.getWidth() * Tiles.TILE_WIDTH, scenery.getHeight() * Tiles.TILE_WIDTH);
+        context = canvas.getGraphicsContext2D();
 
         buttonFormatter(pickUp);
         pickUp.setOnAction(e -> {
@@ -358,11 +363,14 @@ public class Main extends Application {
     }
 
     private void refresh() {
+        view.setScenery();
+        scenery = view.getScenery();
+
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.get(level).getWidth(); x++) {
-            for (int y = 0; y < map.get(level).getHeight(); y++) {
-                Cell cell = map.get(level).getCell(x, y);
+        for (int x = 0; x < scenery.getWidth(); x++) {
+            for (int y = 0; y < scenery.getHeight(); y++) {
+                Cell cell = scenery.getCell(x, y);
                 if (cell.getActor() != null) {
                     cell.getActor().setHasMoved(false);
                     Tiles.drawTile(context, cell.getActor(), x, y);
