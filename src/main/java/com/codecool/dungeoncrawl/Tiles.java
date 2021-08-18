@@ -36,13 +36,12 @@ public class Tiles {
 
         tileMap.put("door", new Tile(5, 9));
         tileMap.put("chest", new Tile(8, 6));
-        tileMap.put("stair", new Tile(2, 6));
+        tileMap.put("stair-down", new Tile(3, 6));
+        tileMap.put("stair-up", new Tile(2, 6));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
         Tile tile = tileMap.get(d.getTileName());
-        String name = d.getTileName();
-        System.out.println(name);
         context.drawImage(tileset, tile.x, tile.y, tile.w, tile.h,
                 x * TILE_WIDTH, y * TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
     }

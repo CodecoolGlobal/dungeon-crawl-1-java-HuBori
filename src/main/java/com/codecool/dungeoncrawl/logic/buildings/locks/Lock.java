@@ -1,4 +1,4 @@
-package com.codecool.dungeoncrawl.logic.buildings.lock;
+package com.codecool.dungeoncrawl.logic.buildings.locks;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.buildings.Obstacle;

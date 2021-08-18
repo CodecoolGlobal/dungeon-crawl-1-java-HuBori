@@ -4,13 +4,12 @@ import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.buildings.lock.Lock;
+import com.codecool.dungeoncrawl.logic.buildings.locks.Lock;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.key.Key;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class Character implements Drawable {
     protected Cell cell;

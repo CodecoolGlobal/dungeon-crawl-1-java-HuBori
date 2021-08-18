@@ -1,7 +1,5 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.buildings.lock.Lock;
-
 public enum CellType {
     EMPTY("empty"),
     FLOOR("floor"),
