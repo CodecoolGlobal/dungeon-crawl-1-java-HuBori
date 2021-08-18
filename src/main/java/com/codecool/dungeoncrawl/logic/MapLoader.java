@@ -27,7 +27,7 @@ public class MapLoader {
         Map<Character, String> doorTypes = new HashMap<>(){{
             put('á', "storage");
             put('é', "dining room");
-            put('í', "scriptory");
+            put('í', "scriptorium");
             put('ó', "bedroom");
             put('ö', "dressing room");
             put('ő', "toilet");
@@ -53,7 +53,7 @@ public class MapLoader {
                     Cell cell = map.getCell(x, y);
                     if ("áéíóöőúüű".indexOf(line.charAt(x)) != -1) {
                         cell.setType(CellType.FLOOR);
-                        new Key(cell, KeyType.BRONSE, level, doorTypes.get(line.charAt(x)));
+                        new Key(cell, KeyType.BRONZE, level, doorTypes.get(line.charAt(x)));
                     } else if ("ÁÉÍÓÖŐÚÜŰ".indexOf(line.charAt(x)) != -1) {
                         cell.setType(CellType.DOOR); // represent by ÁÉÍÓÖŐÚÜŰ (key pairs: áéíóöőúüű) -> max 9 door / floor (or same type)
                         new Door(cell, level, doorTypes.get(Character.toLowerCase(line.charAt(x))));

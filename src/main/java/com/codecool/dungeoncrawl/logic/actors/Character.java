@@ -128,7 +128,7 @@ public abstract class Character implements Drawable {
                 Main.logging.add("You have slayed your foe!");
             }
         }
-        if (this.isPlayer) { // TODO display in window
+        if (this.isPlayer) {
             Main.logging.add("Your valiant onslaught has brought you to " + this.health + "HP.  " +
                     "Whilst you have brought your enemy to " + victim.health + "HP.");
         } else {

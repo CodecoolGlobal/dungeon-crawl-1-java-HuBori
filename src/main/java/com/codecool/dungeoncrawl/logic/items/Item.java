@@ -12,11 +12,12 @@ public abstract class Item implements Drawable {
 	private String detail;
 	protected Cell cell;
 
-    public Item(Cell cell, ItemType type, String detail) { // TODO: show them on scene
+    public Item(Cell cell, ItemType type, String detail) {
         this.cell = cell;
         this.cell.setItem(this);
         this.type = type;
         this.detail = detail;
+
 /*        if (cell != null) { will work without this right now but have an idea that could use this later
             if (cell.getType() == CellType.FLOOR) {
             }

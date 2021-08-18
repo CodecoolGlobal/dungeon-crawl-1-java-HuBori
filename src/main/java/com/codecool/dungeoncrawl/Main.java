@@ -38,7 +38,7 @@ import static java.lang.Integer.parseInt;
 
 public class Main extends Application {
     private Stage menuStage = new Stage();
-    String[] mapFiles = new String[] {"level-1.txt", "level-2.txt", "level-3.txt"};
+    String[] mapFiles = new String[]{"level-1.txt", "level-2.txt", "level-3.txt"};
     private HashMap<Integer, GameMap> map = new HashMap<>() {{
         put(1, MapLoader.loadMap(mapFiles[0]));
         put(2, MapLoader.loadMap(mapFiles[1]));
@@ -60,7 +60,8 @@ public class Main extends Application {
             put(ItemType.WEAPON, new ArrayList<>());
             put(ItemType.KEY, new ArrayList<>());
             put(ItemType.UTILITY, new ArrayList<>());
-        }};
+        }
+    };
     private Label invItems = new Label("");
     public static List<String> logging = new ArrayList<>();
     private Label logs = new Label("");
@@ -93,6 +94,7 @@ public class Main extends Application {
             canvas.requestFocus();
         });
 
+/*
 
         Button inGameMenu = new Button(" Menu ");
         buttonFormatter(inGameMenu);
@@ -100,6 +102,7 @@ public class Main extends Application {
             //TODO popup window
         });
 
+*/
 
 /*
         btn.setText("Pick up");
@@ -174,7 +177,7 @@ public class Main extends Application {
         log.setMinHeight(110);
         log.setMaxHeight(110);
         textFormatter(logs);
-        logs.setPadding(new Insets(0,0,0,150));
+        logs.setPadding(new Insets(0, 0, 0, 150));
         log.add(logs, 0, 0);
 
 
@@ -196,7 +199,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private Canvas menuBg(){
+    private Canvas menuBg() {
         Canvas canvas = new Canvas(
                 10 * Tiles.TILE_WIDTH,
                 10 * Tiles.TILE_WIDTH);
@@ -294,12 +297,12 @@ public class Main extends Application {
         menuStage.setScene(scene);
     }
 
-    private void textFormatter(Label txt){
+    private void textFormatter(Label txt) {
         txt.setTextFill(Color.web("#9F9F9F"));
         txt.setStyle("-fx-font: 16 ani");
     }
 
-    private void buttonFormatter(Button btn){
+    private void buttonFormatter(Button btn) {
         //btn.setPadding(new Insets(0,10,0,10));
         btn.setStyle("-fx-border-style: none;" +
                 "-fx-background-color: #808080;" +
@@ -330,25 +333,25 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 cell = map.get(level).getCell(map.get(level).getPlayer().getX(), map.get(level).getPlayer().getY() - 1);
-                if (cell.getType() != CellType.WALL) {
+                if (cell.getType() != CellType.WALL && !map.get(level).getPlayer().isCheatmode()) {
                     map.get(level).getPlayer().tryMove(0, -1, inventory.get(ItemType.KEY));
                 }
                 break;
             case DOWN:
                 cell = map.get(level).getCell(map.get(level).getPlayer().getX(), map.get(level).getPlayer().getY() + 1);
-                if (cell.getType() != CellType.WALL) {
+                if (cell.getType() != CellType.WALL && !map.get(level).getPlayer().isCheatmode()) {
                     map.get(level).getPlayer().tryMove(0, 1, inventory.get(ItemType.KEY));
                 }
                 break;
             case LEFT:
                 cell = map.get(level).getCell(map.get(level).getPlayer().getX() - 1, map.get(level).getPlayer().getY());
-                if (cell.getType() != CellType.WALL) {
+                if (cell.getType() != CellType.WALL && !map.get(level).getPlayer().isCheatmode()) {
                     map.get(level).getPlayer().tryMove(-1, 0, inventory.get(ItemType.KEY));
                 }
                 break;
             case RIGHT:
                 cell = map.get(level).getCell(map.get(level).getPlayer().getX() + 1, map.get(level).getPlayer().getY());
-                if (cell.getType() != CellType.WALL) {
+                if (cell.getType() != CellType.WALL && !map.get(level).getPlayer().isCheatmode()) {
                     map.get(level).getPlayer().tryMove(1, 0, inventory.get(ItemType.KEY));
                 }
                 break;
@@ -368,7 +371,7 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
-                }else{
+                } else {
                     System.out.println("\ncontent: " + cell.getType());
                     Tiles.drawTile(context, cell, x, y);
                 }
@@ -386,45 +389,34 @@ public class Main extends Application {
         inventorySize += inventory.get(ItemType.KEY).size();
         inventorySize += inventory.get(ItemType.UTILITY).size();
 
-        /*if (map.get(level).getPlayer().getCell().getItem() == null) {
-            canvas.requestFocus();
-        } else {
-            logging.add("Do you want to pick up this marvelous artifact master?");
-            pickUp.requestFocus();
-            //btn.requestFocus();
-        }
-
-        String tmp = ""; //making note for the commit, merge mostly done, fixing rest in ide then commit
-        for (Item item : inventory) {
-            tmp += item.getDetail() + "\n";*/
-
         String invTitle = String.format("Inventory (%d):", inventorySize);
         String tmp = "";
         Set<ItemType> setOfKeySet = inventory.keySet();
-        for (ItemType key: setOfKeySet) {
+        for (ItemType key : setOfKeySet) {
             ArrayList value = inventory.get(key);
-            tmp += String.format("\n\t%s (%d):\n", key.toString().toLowerCase(), value.size());
+            tmp += String.format("\n  %s (%d):\n", key.toString().toLowerCase(), value.size());
             for (int i = 0; i < value.size(); i++) {
-                tmp += String.format("\t\t%s\n", ((ArrayList<Item>) value).get(i).getDetail());
+                tmp += String.format("   %s\n", ((ArrayList<Item>) value).get(i).getDetail());
             }
+        }
+
+        if (map.get(level).getPlayer().getCell().getItem() == null) {
+            canvas.requestFocus();
+        } else {
+            logging.add("Do you want to pick up this marvelous artifact master?");
+            btn.requestFocus();
         }
         invLabel.setText(invTitle);
         invItems.setText(tmp);
+
         tmp = "";
-        if(logging.size() > 5){
+        if (logging.size() > 5) {
             logging.remove(0);
         }
         for (String log : logging) {
             tmp += log + "\n";
         }
         logs.setText(tmp);
-
-        if (map.get(level).getPlayer().getCell().getItem() == null) {
-            canvas.requestFocus();
-        } else {
-            logging.add("I'm standing on an item! Let's pick it up!");
-            btn.requestFocus();
-        }
     }
 
     private void enemyMovement() {
