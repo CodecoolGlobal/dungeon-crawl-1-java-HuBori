@@ -80,7 +80,7 @@ public class Main extends Application {
         menuStage.setTitle("Java's lot");
         menu();
 
-        view = new View(map, level);
+        view = new View(map.get(level), level);
         scenery = view.getScenery();
         canvas = new Canvas(scenery.getWidth() * Tiles.TILE_WIDTH, scenery.getHeight() * Tiles.TILE_WIDTH);
         context = canvas.getGraphicsContext2D();
@@ -363,7 +363,7 @@ public class Main extends Application {
     }
 
     private void refresh() {
-        view.setScenery(level);
+        view.setScenery();
         scenery = view.getScenery();
 
         context.setFill(Color.BLACK);

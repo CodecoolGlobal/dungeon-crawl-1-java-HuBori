@@ -5,11 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9be36b1e-40a9-4176-9959-9c73ac794402" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/Ui.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/View.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/logic/Cell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/logic/Cell.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/level-1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/maps/level-1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/level-2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/maps/level-2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/maps/level-3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/maps/level-3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/codecool/dungeoncrawl/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/codecool/dungeoncrawl/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/codecool/dungeoncrawl/logic/actors/Character.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/codecool/dungeoncrawl/logic/actors/Character.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

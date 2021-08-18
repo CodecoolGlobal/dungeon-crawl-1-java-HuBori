@@ -8,22 +8,20 @@ import java.util.HashMap;
 public class View {
     private final int width = 30;
     private final int height = 20;
-    private HashMap<Integer, GameMap> dungeon;
-    private int level;
-    private GameMap scenery = new GameMap(level, width, height, CellType.EMPTY);
+    private GameMap map;
+    private GameMap scenery;
 
     public GameMap getScenery() {
         return scenery;
     }
 
-    public View(HashMap<Integer, GameMap> dungeon, int level) {
-        this.dungeon = dungeon;
-        this.level = level;
-        setScenery(level);
+    public View(GameMap map, int level) {
+        this.map = map;
+        scenery = new GameMap(level, width, height, CellType.EMPTY);
+        setScenery();
     }
 
-    public void setScenery(int level) {
-        GameMap map = dungeon.get(level);
+    public void setScenery() {
         int x = (map.getPlayer().getX() - (width/2) < 0) ? 0 : map.getPlayer().getX() - (width/2);
         int y = (map.getPlayer().getY() - (height/2)) < 0 ? 0 : map.getPlayer().getY() - (height/2);
         x = (x < map.getWidth()) ? x : map.getWidth() - 1;
