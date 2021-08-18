@@ -4,7 +4,12 @@ import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.actors.enemies.Monster;
+import com.codecool.dungeoncrawl.logic.buildings.locks.Lock;
+import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.items.ItemType;
+import com.codecool.dungeoncrawl.logic.items.key.Key;
+
+import java.util.ArrayList;
 
 public abstract class Character implements Drawable {
     protected Cell cell;
@@ -22,11 +27,13 @@ public abstract class Character implements Drawable {
         this.health = maxHealth;
     }
 
-    public void tryMove(int dx, int dy) {
+    public void tryMove(int dx, int dy, ArrayList<Item> keys) {
         Cell nextCell = this.cell.getNeighbor(dx, dy);
         attackIfCan(nextCell);
         if (nextCell.getActor() == null) {
-            move(nextCell);
+            if (canGoThrough(cell, keys)) {
+                move(nextCell);
+            }
         }
     }
 
@@ -126,6 +133,32 @@ public abstract class Character implements Drawable {
         } else {
             Main.logging.add("Their fiendish attack has brought you to " + victim.health + "HP.  " +
                     "But it has cost them dearly, they are only at " + this.health + "HP now.");
+        }
+    }
+
+    private boolean canGoThrough(Cell cell, ArrayList<Item> keys){
+        if (cell.isLock()) {
+            if (!isPlayer) {
+                System.out.println("Monsters can't go through doors");
+                return false;
+            } else {
+                Lock lock = cell.getLock();
+                for (int i = 0; i < keys.size(); i++) {
+                    System.out.println("Has a key");
+                    if (keys.get(i).getType() == ItemType.KEY) {
+                        lock.attemptOpen((Key) keys.get(i));
+                        System.out.println("Try key: " + keys.get(i));
+                        if (lock.isOpen()) {
+                            System.out.println("Sesame unfold!");
+                            return true;
+                        }
+                    }
+                }
+                System.out.println("Get a key first! :P"); // This happens, player gets stuck
+                return false;
+            }
+        } else {
+            return true;
         }
     }
 }

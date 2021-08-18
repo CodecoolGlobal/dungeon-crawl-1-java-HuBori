@@ -33,10 +33,23 @@ public class Tiles {
         tileMap.put("giddy", new Tile(26, 5));
         tileMap.put("muzzy", new Tile(30, 6));
         tileMap.put("marching", new Tile(29, 6));
+
+        tileMap.put("door", new Tile(5, 9));
+        tileMap.put("chest", new Tile(8, 6));
+        tileMap.put("stair-down", new Tile(3, 6));
+        tileMap.put("stair-up", new Tile(2, 6));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
-        Tile tile = tileMap.get(d.getTileName());
+        Tile tile = tileMap.get(d.getTileName()); // w  = null
+        System.out.println(tileset);
+        System.out.println(tile.x);
+        System.out.println(tile.y);
+        System.out.println(tile.w);
+        System.out.println(tile.h);
+        System.out.println(x* TILE_WIDTH);
+        System.out.println(y*TILE_WIDTH);
+        System.out.println(TILE_WIDTH);
         context.drawImage(tileset, tile.x, tile.y, tile.w, tile.h,
                 x * TILE_WIDTH, y * TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
     }

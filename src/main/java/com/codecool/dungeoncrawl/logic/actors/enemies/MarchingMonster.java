@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MarchingMonster extends Monster { // moves back and forth
@@ -40,6 +41,6 @@ public class MarchingMonster extends Monster { // moves back and forth
             direction[0] *= -1;
             direction[1] *= -1;
         }
-        this.tryMove(direction[0], direction[1]);
+        this.tryMove(direction[0], direction[1], null);
     }
 }

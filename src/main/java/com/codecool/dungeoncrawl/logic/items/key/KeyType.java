@@ -1,4 +1,4 @@
-package com.codecool.dungeoncrawl.logic.items.utility;
+package com.codecool.dungeoncrawl.logic.items.key;
 
 public enum KeyType {
     GOLD,
