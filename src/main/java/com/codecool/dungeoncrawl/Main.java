@@ -214,8 +214,10 @@ public class Main extends Application {
                 if (cell.getActor() != null) {
                     cell.getActor().setHasMoved(false);
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                } else {
-                    Tiles.drawTile(context, cell, x, y); // TODO: cause of the problem: Not every map has players (...maybe?)
+                } else if (cell.getItem() != null) {
+                    Tiles.drawTile(context, cell.getItem(), x, y);
+                }else{
+                    Tiles.drawTile(context, cell, x, y);
                 }
             }
         }
