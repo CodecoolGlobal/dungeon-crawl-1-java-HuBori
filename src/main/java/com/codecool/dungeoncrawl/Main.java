@@ -39,34 +39,31 @@ import static java.lang.Integer.parseInt;
 public class Main extends Application {
     private Stage menuStage = new Stage();
     String[] mapFiles = new String[] {"level-1.txt", "level-2.txt", "level-3.txt"};
-    private HashMap<Integer, GameMap> map = new HashMap<>() {{
+    protected HashMap<Integer, GameMap> map = new HashMap<>() {{
         put(1, MapLoader.loadMap(mapFiles[0]));
         put(2, MapLoader.loadMap(mapFiles[1]));
         put(3, MapLoader.loadMap(mapFiles[2]));
     }};
     private View view;
     private GameMap scenery;
-    private Canvas canvas;
+    protected Canvas canvas;
     private GraphicsContext context;
     private Button btn = new Button();
-    private Label healthLabel = new Label();
-    private Label maxHPLabel = new Label();
-    private Label attackLabel = new Label();
-    private Label defenseLabel = new Label();
-    private Button pickUp = new Button("Pick up");
-    private ProgressBar healthBar = new ProgressBar(1);
-    private Label invLabel = new Label("Inventory:\n");
-    private Map<ItemType, ArrayList<Item>> inventory = new HashMap<>() {
+    protected Button pickUp = new Button("Pick up");
+    protected ProgressBar healthBar = new ProgressBar(1);
+    protected Label invLabel = new Label("Inventory:\n");
+    protected Map<ItemType, ArrayList<Item>> inventory = new HashMap<>() {
         {
             put(ItemType.ARMOR, new ArrayList<>());
             put(ItemType.WEAPON, new ArrayList<>());
             put(ItemType.KEY, new ArrayList<>());
             put(ItemType.UTILITY, new ArrayList<>());
         }};
-    private Label invItems = new Label("");
+    protected Label invItems = new Label("");
     public static List<String> logging = new ArrayList<>();
-    private Label logs = new Label("");
-    private int level = 1;
+    protected Label logs = new Label("");
+    protected int level = 1;
+    private Ui ui = new Ui(this);
 
     public Main() throws IOException {
     }
@@ -75,37 +72,27 @@ public class Main extends Application {
         launch(args);
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        menuStage.setTitle("Java's lot");
-        menu();
-
+    private void setMapDependentVariables() {
         view = new View(map.get(level), level);
         scenery = view.getScenery();
         canvas = new Canvas(scenery.getWidth() * Tiles.TILE_WIDTH, scenery.getHeight() * Tiles.TILE_WIDTH);
         context = canvas.getGraphicsContext2D();
+    }
 
-        buttonFormatter(pickUp);
-        pickUp.setOnAction(e -> {
-            Item item = map.get(level).getPlayer().getCell().getItem();
-            if (item != null) {
-                item.pickUp(inventory.get(ItemType.KEY), map.get(level));
-                logging.add("You picked up the legendary " + item.getDetail() + "!");
-                refresh();
-            } else {
-                logging.add("Master, you are not strong enough to pick up the planet itself just yet.");
-            }
-            canvas.requestFocus();
-        });
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        menuStage.setTitle("Java's lot");
+        menu();
+        setMapDependentVariables();
+        ui.formatPickUpButton(pickUp, map.get(level));
+        Scene scene = new Scene(ui.getBorderPane());
+        primaryStage.setScene(scene);
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
+        refresh();
 
-
-        Button inGameMenu = new Button(" Menu ");
-        buttonFormatter(inGameMenu);
-        inGameMenu.setOnAction(e -> {
-            //TODO popup window
-        });
-
-
+        primaryStage.setTitle("Java's lot");
+        canvas.requestFocus();
+        primaryStage.show();
 /*
         btn.setText("Pick up");
         EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
@@ -122,83 +109,6 @@ public class Main extends Application {
             }
         };
 */
-
-        Label characterName = new Label(map.get(level).getPlayer().getName());
-        characterName.setTextFill(Color.web("#FFB10A"));
-        characterName.setStyle("-fx-font-weight: bold;" +
-                "-fx-font: 30 ani");
-
-        FlowPane stats = new FlowPane();
-        Label health = new Label("Health: ");
-        Label slash = new Label("/");
-        Label attack = new Label("Attack: ");
-        Label defense = new Label("Defense: ");
-        textFormatter(health);
-        textFormatter(slash);
-        textFormatter(attack);
-        textFormatter(defense);
-        textFormatter(healthLabel);
-        textFormatter(maxHPLabel);
-        textFormatter(attackLabel);
-        textFormatter(defenseLabel);
-
-
-        stats.setMaxWidth(160);
-        stats.setMinWidth(160);
-        stats.setPadding(new Insets(15));
-
-        stats.getChildren().add(pickUp);
-        //stats.getChildren().add(new Label("                 "));
-        //stats.getChildren().add(inGameMenu); more complicated than thought, remains for next sprint
-        stats.getChildren().add(new Label("           "));
-        stats.getChildren().add(characterName);
-        stats.getChildren().add(healthBar);
-        stats.getChildren().add(health);
-        stats.getChildren().add(healthLabel);
-        stats.getChildren().add(slash);
-        stats.getChildren().add(maxHPLabel);
-        stats.getChildren().add(attack);
-        stats.getChildren().add(attackLabel);
-        stats.getChildren().add(defense);
-        stats.getChildren().add(defenseLabel);
-
-        stats.setStyle("-fx-border-color: #9f9f9f;" +
-                "-fx-border-width: 2px");
-
-        GridPane inv = new GridPane();
-        inv.setPrefWidth(150);
-        inv.setPadding(new Insets(15));
-        textFormatter(invLabel);
-        textFormatter(invItems);
-        inv.add(invLabel, 0, 0);
-        inv.add(invItems, 0, 1);
-
-        inv.setStyle("-fx-border-color: #9f9f9f;");
-
-        GridPane log = new GridPane();
-        log.setMinHeight(110);
-        log.setMaxHeight(110);
-        textFormatter(logs);
-        logs.setPadding(new Insets(0,0,0,150));
-        log.add(logs, 0, 0);
-
-
-        BorderPane borderPane = new BorderPane();
-
-        borderPane.setCenter(canvas);
-        borderPane.setStyle("-fx-background-color: #4b3241");
-        borderPane.setBottom(log);
-        borderPane.setLeft(inv);
-        borderPane.setRight(stats);
-
-        Scene scene = new Scene(borderPane);
-        primaryStage.setScene(scene);
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
-        refresh();
-
-        primaryStage.setTitle("Java's lot");
-        canvas.requestFocus();
-        primaryStage.show();
     }
 
     private Canvas menuBg(){
@@ -217,21 +127,7 @@ public class Main extends Application {
         return canvas;
     }
 
-    private void menu() {
-        Button newGame = new Button("New Game");
-        Button close = new Button("Exit");
-        buttonFormatter(newGame);
-        buttonFormatter(close);
-
-        newGame.setOnAction(e -> {
-            newGame();
-        });
-
-        close.setOnAction(e -> {
-            menuStage.close();
-            System.exit(0);
-        });
-
+    private AnchorPane setMenuAnchor(Button newGame, Button close) {
         AnchorPane pane = new AnchorPane();
         pane.getChildren().add(menuBg());
         AnchorPane.setTopAnchor(newGame, 120.0);
@@ -244,7 +140,10 @@ public class Main extends Application {
         pane.getChildren().add(close);
         newGame.setAlignment(Pos.CENTER);
         close.setAlignment(Pos.CENTER);
+        return pane;
+    }
 
+    private void setMenuScene(AnchorPane pane) {
         Scene scene = new Scene(pane);
         scene.setOnKeyPressed(this::onKeyPressed);
         menuStage.setScene(scene);
@@ -253,25 +152,26 @@ public class Main extends Application {
         }
     }
 
-    private void newGame() {
-        Label menuText = new Label("Name your character");
-        TextField input = new TextField();
-        Button play = new Button("Start Game");
-        Button mainMenu = new Button("Main Menu");
-        buttonFormatter(play);
-        buttonFormatter(mainMenu);
+    private void menu() {
+        Button newGame = new Button("New Game");
+        Button close = new Button("Exit");
+        ui.buttonFormatter(newGame);
+        ui.buttonFormatter(close);
 
-        play.setOnAction(e -> {
-            map.get(level).getPlayer().setName(input.getText());
+        newGame.setOnAction(e -> {
+            newGame();
+        });
+
+        close.setOnAction(e -> {
             menuStage.close();
+            System.exit(0);
         });
 
-        mainMenu.setOnAction(e -> {
-            menu();
-        });
-        menuText.setTextFill(Color.web("#AFAFAF"));
-        menuText.setStyle("-fx-font-weight: bold");
+        AnchorPane pane = setMenuAnchor(newGame, close);
+        setMenuScene(pane);
+    }
 
+    private AnchorPane setGameAnchor(Label menuText, TextField input, Button play, Button mainMenu) {
         AnchorPane pane = new AnchorPane();
         pane.getChildren().add(menuBg());
         AnchorPane.setTopAnchor(menuText, 50.0);
@@ -294,75 +194,61 @@ public class Main extends Application {
         input.setAlignment(Pos.CENTER);
         play.setAlignment(Pos.CENTER);
         mainMenu.setAlignment(Pos.CENTER);
+        return pane;
+    }
+
+    private void newGame() {
+        Label menuText = new Label("Name your character");
+        TextField input = new TextField();
+        Button play = new Button("Start Game");
+        Button mainMenu = new Button("Main Menu");
+        ui.buttonFormatter(play);
+        ui.buttonFormatter(mainMenu);
+
+        play.setOnAction(e -> {
+            map.get(level).getPlayer().setName(input.getText());
+            menuStage.close();
+        });
+
+        mainMenu.setOnAction(e -> {
+            menu();
+        });
+        menuText.setTextFill(Color.web("#AFAFAF"));
+        menuText.setStyle("-fx-font-weight: bold");
+
+        AnchorPane pane = setGameAnchor(menuText, input, play, mainMenu);
 
         Scene scene = new Scene(pane);
         menuStage.setScene(scene);
     }
 
-    private void textFormatter(Label txt){
-        txt.setTextFill(Color.web("#9F9F9F"));
-        txt.setStyle("-fx-font: 16 ani");
-    }
-
-    private void buttonFormatter(Button btn){
-        //btn.setPadding(new Insets(0,10,0,10));
-        btn.setStyle("-fx-border-style: none;" +
-                "-fx-background-color: #808080;" +
-                "-fx-text-fill: #e1e1e1;" +
-                "-fx-background-radius: 0;" +
-                "-fx-border-radius: 0;");
-
-        btn.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                btn.setStyle("-fx-background-color:#5f5f5f;" +
-                        "-fx-background-radius: 0;" +
-                        "-fx-text-fill: #e1e1e1;");
-            }
-        });
-        btn.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                btn.setStyle("-fx-background-color:#808080;" +
-                        "-fx-background-radius: 0;" +
-                        "-fx-text-fill: #e1e1e1;");
-            }
-        });
+    private void handleKey(int modX, int modY) {
+        Cell cell = map.get(level).getCell(map.get(level).getPlayer().getX() + modX, map.get(level).getPlayer().getY() + modY);
+        if (cell.getType() != CellType.WALL) {
+            map.get(level).getPlayer().tryMove(modX, modY, inventory.get(ItemType.KEY));
+        }
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
-        Cell cell;
         switch (keyEvent.getCode()) {
             case UP:
-                cell = map.get(level).getCell(map.get(level).getPlayer().getX(), map.get(level).getPlayer().getY() - 1);
-                if (cell.getType() != CellType.WALL) {
-                    map.get(level).getPlayer().tryMove(0, -1, inventory.get(ItemType.KEY));
-                }
+                handleKey(0, -1);
                 break;
             case DOWN:
-                cell = map.get(level).getCell(map.get(level).getPlayer().getX(), map.get(level).getPlayer().getY() + 1);
-                if (cell.getType() != CellType.WALL) {
-                    map.get(level).getPlayer().tryMove(0, 1, inventory.get(ItemType.KEY));
-                }
+                handleKey(0, 1);
                 break;
             case LEFT:
-                cell = map.get(level).getCell(map.get(level).getPlayer().getX() - 1, map.get(level).getPlayer().getY());
-                if (cell.getType() != CellType.WALL) {
-                    map.get(level).getPlayer().tryMove(-1, 0, inventory.get(ItemType.KEY));
-                }
+                handleKey(-1, 0);
                 break;
             case RIGHT:
-                cell = map.get(level).getCell(map.get(level).getPlayer().getX() + 1, map.get(level).getPlayer().getY());
-                if (cell.getType() != CellType.WALL) {
-                    map.get(level).getPlayer().tryMove(1, 0, inventory.get(ItemType.KEY));
-                }
+                handleKey(1, 0);
                 break;
         }
         enemyMovement();
         refresh();
     }
 
-    private void refresh() {
+    private void updateScenery() {
         view.setScenery();
         scenery = view.getScenery();
 
@@ -382,29 +268,13 @@ public class Main extends Application {
                 }
             }
         }
+    }
 
-        healthBar.setProgress((double) map.get(level).getPlayer().getHealth() / (double) map.get(level).getPlayer().getMaxHealth());
-        healthLabel.setText("" + map.get(level).getPlayer().getHealth());
-        maxHPLabel.setText("" + map.get(level).getPlayer().getMaxHealth());
-        attackLabel.setText("" + map.get(level).getPlayer().getAttack());
-        defenseLabel.setText("" + map.get(level).getPlayer().getDefense());
-
+    private void updateInventory() {
         int inventorySize = inventory.get(ItemType.ARMOR).size();
         inventorySize += inventory.get(ItemType.WEAPON).size();
         inventorySize += inventory.get(ItemType.KEY).size();
         inventorySize += inventory.get(ItemType.UTILITY).size();
-
-        /*if (map.get(level).getPlayer().getCell().getItem() == null) {
-            canvas.requestFocus();
-        } else {
-            logging.add("Do you want to pick up this marvelous artifact master?");
-            pickUp.requestFocus();
-            //btn.requestFocus();
-        }
-
-        String tmp = ""; //making note for the commit, merge mostly done, fixing rest in ide then commit
-        for (Item item : inventory) {
-            tmp += item.getDetail() + "\n";*/
 
         String invTitle = String.format("Inventory (%d):", inventorySize);
         String tmp = "";
@@ -416,9 +286,13 @@ public class Main extends Application {
                 tmp += String.format("\t\t%s\n", ((ArrayList<Item>) value).get(i).getDetail());
             }
         }
+
         invLabel.setText(invTitle);
         invItems.setText(tmp);
-        tmp = "";
+    }
+
+    private void updateLog() {
+        String tmp = "";
         if(logging.size() > 5){
             logging.remove(0);
         }
@@ -433,6 +307,25 @@ public class Main extends Application {
             logging.add("I'm standing on an item! Let's pick it up!");
             btn.requestFocus();
         }
+    }
+
+    protected void refresh() {
+        updateScenery();
+        ui.updateStats();
+        updateInventory();
+        updateLog();
+
+        /*if (map.get(level).getPlayer().getCell().getItem() == null) {
+            canvas.requestFocus();
+        } else {
+            logging.add("Do you want to pick up this marvelous artifact master?");
+            pickUp.requestFocus();
+            //btn.requestFocus();
+        }
+
+        String tmp = ""; //making note for the commit, merge mostly done, fixing rest in ide then commit
+        for (Item item : inventory) {
+            tmp += item.getDetail() + "\n";*/
     }
 
     private void enemyMovement() {
