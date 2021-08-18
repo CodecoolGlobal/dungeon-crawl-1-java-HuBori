@@ -68,7 +68,8 @@ public class Cell implements Drawable {
         switch (type) {
             case DOOR: return true;
             case CHEST: return true;
-            case STAIR: return true;
+            case STAIRDOWN: return true;
+            case STAIRUP: return true;
             default: return false;
         }
     }

@@ -42,6 +42,14 @@ public class Tiles {
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
         Tile tile = tileMap.get(d.getTileName()); // w  = null
+        System.out.println(tileset);
+        System.out.println(tile.x);
+        System.out.println(tile.y);
+        System.out.println(tile.w);
+        System.out.println(tile.h);
+        System.out.println(x* TILE_WIDTH);
+        System.out.println(y*TILE_WIDTH);
+        System.out.println(TILE_WIDTH);
         context.drawImage(tileset, tile.x, tile.y, tile.w, tile.h,
                 x * TILE_WIDTH, y * TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
     }

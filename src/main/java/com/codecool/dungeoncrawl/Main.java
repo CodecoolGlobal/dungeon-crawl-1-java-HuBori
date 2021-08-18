@@ -30,7 +30,11 @@ import static java.lang.Integer.parseInt;
 
 public class Main extends Application {
     String[] mapFiles = new String[] {"level-1.txt", "level-2.txt", "level-3.txt"};
-    private HashMap<Integer, GameMap> map = new HashMap<>();
+    private HashMap<Integer, GameMap> map = new HashMap<>() {{
+        put(1, MapLoader.loadMap(mapFiles[0]));
+        put(2, MapLoader.loadMap(mapFiles[1]));
+        put(3, MapLoader.loadMap(mapFiles[2]));
+    }};
     private Canvas canvas;
     private Button btn = new Button();
     private GraphicsContext context;
@@ -54,18 +58,12 @@ public class Main extends Application {
     public Main() throws IOException {
     }
 
-
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        for (String filename : mapFiles) {
-            GameMap lvlMap = MapLoader.loadMap(filename);
-            int level = parseInt(filename.split("level-")[1].split(".txt")[0]);
-            map.put(level, lvlMap);
-        }
         canvas = new Canvas(map.get(level).getWidth() * Tiles.TILE_WIDTH, map.get(level).getHeight() * Tiles.TILE_WIDTH);
         context = canvas.getGraphicsContext2D();
 
@@ -203,8 +201,6 @@ public class Main extends Application {
     }
 
     private void refresh() {
-        canvas = new Canvas(map.get(level).getWidth() * Tiles.TILE_WIDTH, map.get(level).getHeight() * Tiles.TILE_WIDTH);
-        context = canvas.getGraphicsContext2D();
         logging.add("turn+1");
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -217,6 +213,7 @@ public class Main extends Application {
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
                 }else{
+                    System.out.println("\ncontent: " + cell.getType());
                     Tiles.drawTile(context, cell, x, y);
                 }
             }

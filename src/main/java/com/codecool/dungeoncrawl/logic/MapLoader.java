@@ -81,8 +81,7 @@ public class MapLoader {
                                 new MuzzyMonster(cell);
                                 break;
                             case '@':
-                                cell.setType(CellType.STAIR);
-                                new StairDown(cell, level, String.valueOf(level-1));
+                                cell.setType(CellType.FLOOR);
                                 map.setPlayer(new Player(cell));
                                 break;
                             case 'k':
@@ -102,11 +101,11 @@ public class MapLoader {
                                 new Armor(cell, ArmorType.SHIELD);
                                 break;
                             case 'A': // Use V and A for down and up (like arrows)
-                                cell.setType(CellType.STAIR);
+                                cell.setType(CellType.STAIRUP);
                                 new StairUp(cell, level, String.valueOf(level + 1));
                                 break;
                             case 'V':
-                                cell.setType(CellType.STAIR);
+                                cell.setType(CellType.STAIRDOWN);
                                 new StairDown(cell, level, String.valueOf(level - 1));
                                 break;
                             case 'C':
