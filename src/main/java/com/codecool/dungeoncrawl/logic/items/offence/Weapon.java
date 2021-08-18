@@ -16,15 +16,15 @@ public class Weapon extends Item {
     }
 
     @Override
+    public String getTileName() {
+        return "weapon";
+    }
+
+    @Override
     public void pickUp(List<Item> inventory, GameMap map){
         inventory.add(this);
         map.getCell(cell.getX(), cell.getY()).setItem(null);
         map.getPlayer().setAttack(subType.getAttack());
-    }
-
-    @Override
-    public String getTileName() {
-        return "weapon";
     }
 
     public WeaponType getSubType() {

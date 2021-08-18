@@ -121,7 +121,9 @@ public class Main extends Application {
                 if (cell.getActor() != null) {
                     cell.getActor().setHasMoved(false);
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                } else {
+                } else if (cell.getItem() != null) {
+                    Tiles.drawTile(context, cell.getItem(), x, y);
+                }else{
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
@@ -136,7 +138,7 @@ public class Main extends Application {
         }
     }
 
-    private void enemyMovement(){
+    private void enemyMovement() {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 Cell cell = map.getCell(x, y);

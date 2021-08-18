@@ -13,16 +13,16 @@ public abstract class Item implements Drawable {
 	protected Cell cell;
 
     public Item(Cell cell, ItemType type, String detail) { // TODO: show them on scene
-        if (cell != null) {
+        this.cell = cell;
+        this.cell.setItem(this);
+        this.type = type;
+        this.detail = detail;
+/*        if (cell != null) { will work without this right now but have an idea that could use this later
             if (cell.getType() == CellType.FLOOR) {
-                this.cell = cell;
-                this.cell.setItem(this);
-                this.type = type;
-                this.detail = detail;
             }
         } else {
             throw new ArrayStoreException("Items should only be placed on the floor!");
-        }
+        }*/
     }
 
     public ItemType getType() {
