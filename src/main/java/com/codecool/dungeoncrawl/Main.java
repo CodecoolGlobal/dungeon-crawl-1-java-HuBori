@@ -37,11 +37,6 @@ import java.util.*;
 import static java.lang.Integer.parseInt;
 
 public class Main extends Application {
-    private GameMap map = MapLoader.loadMap();
-    /*private Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
-    private GraphicsContext context = canvas.getGraphicsContext2D();*/
     private Stage menuStage = new Stage();
     String[] mapFiles = new String[] {"level-1.txt", "level-2.txt", "level-3.txt"};
     private HashMap<Integer, GameMap> map = new HashMap<>() {{
@@ -51,13 +46,13 @@ public class Main extends Application {
     }};
     private Canvas canvas;
     private GraphicsContext context;
+    private Button btn = new Button();
     private Label healthLabel = new Label();
     private Label maxHPLabel = new Label();
     private Label attackLabel = new Label();
     private Label defenseLabel = new Label();
     private Button pickUp = new Button("Pick up");
     private ProgressBar healthBar = new ProgressBar(1);
-    private List<Item> inventory = new ArrayList<>();
     private Label invLabel = new Label("Inventory:\n");
     private Map<ItemType, ArrayList<Item>> inventory = new HashMap<>() {
         {
@@ -80,14 +75,16 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        canvas = new Canvas(map.get(level).getWidth() * Tiles.TILE_WIDTH, map.get(level).getHeight() * Tiles.TILE_WIDTH);
+        context = canvas.getGraphicsContext2D();
         menuStage.setTitle("Java's lot");
         menu();
 
         buttonFormatter(pickUp);
         pickUp.setOnAction(e -> {
-            Item item = map.getPlayer().getCell().getItem();
+            Item item = map.get(level).getPlayer().getCell().getItem();
             if (item != null) {
-                item.pickUp(inventory, map);
+                item.pickUp(inventory.get(ItemType.KEY), map.get(level));
                 logging.add("You picked up the legendary " + item.getDetail() + "!");
                 refresh();
             } else {
@@ -103,10 +100,8 @@ public class Main extends Application {
             //TODO popup window
         });
 
-/*
-        canvas = new Canvas(map.get(level).getWidth() * Tiles.TILE_WIDTH, map.get(level).getHeight() * Tiles.TILE_WIDTH);
-        context = canvas.getGraphicsContext2D();
 
+/*
         btn.setText("Pick up");
         EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent click) {
@@ -123,7 +118,7 @@ public class Main extends Application {
         };
 */
 
-        Label characterName = new Label(map.getPlayer().getName());
+        Label characterName = new Label(map.get(level).getPlayer().getName());
         characterName.setTextFill(Color.web("#FFB10A"));
         characterName.setStyle("-fx-font-weight: bold;" +
                 "-fx-font: 30 ani");
@@ -195,8 +190,6 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
         refresh();
-        //scene.setOnKeyPressed(this::onKeyPressed);
-        //btn.setOnAction(handler)
 
         primaryStage.setTitle("Java's lot");
         canvas.requestFocus();
@@ -264,7 +257,7 @@ public class Main extends Application {
         buttonFormatter(mainMenu);
 
         play.setOnAction(e -> {
-            map.getPlayer().setName(input.getText());
+            map.get(level).getPlayer().setName(input.getText());
             menuStage.close();
         });
 
@@ -382,19 +375,18 @@ public class Main extends Application {
             }
         }
 
-        healthBar.setProgress((double) map.getPlayer().getHealth() / (double) map.getPlayer().getMaxHealth());
-        healthLabel.setText("" + map.getPlayer().getHealth());
-        maxHPLabel.setText("" + map.getPlayer().getMaxHealth());
-        attackLabel.setText("" + map.getPlayer().getAttack());
-        defenseLabel.setText("" + map.getPlayer().getDefense());
+        healthBar.setProgress((double) map.get(level).getPlayer().getHealth() / (double) map.get(level).getPlayer().getMaxHealth());
+        healthLabel.setText("" + map.get(level).getPlayer().getHealth());
+        maxHPLabel.setText("" + map.get(level).getPlayer().getMaxHealth());
+        attackLabel.setText("" + map.get(level).getPlayer().getAttack());
+        defenseLabel.setText("" + map.get(level).getPlayer().getDefense());
 
         int inventorySize = inventory.get(ItemType.ARMOR).size();
         inventorySize += inventory.get(ItemType.WEAPON).size();
         inventorySize += inventory.get(ItemType.KEY).size();
         inventorySize += inventory.get(ItemType.UTILITY).size();
 
-        if (map.getPlayer().getCell().getItem() == null) { // TODO: add items to cells
-            // TODO: fix bug
+        /*if (map.get(level).getPlayer().getCell().getItem() == null) {
             canvas.requestFocus();
         } else {
             logging.add("Do you want to pick up this marvelous artifact master?");
@@ -404,7 +396,7 @@ public class Main extends Application {
 
         String tmp = ""; //making note for the commit, merge mostly done, fixing rest in ide then commit
         for (Item item : inventory) {
-            tmp += item.getDetail() + "\n";
+            tmp += item.getDetail() + "\n";*/
 
         String invTitle = String.format("Inventory (%d):", inventorySize);
         String tmp = "";
@@ -426,6 +418,13 @@ public class Main extends Application {
             tmp += log + "\n";
         }
         logs.setText(tmp);
+
+        if (map.get(level).getPlayer().getCell().getItem() == null) {
+            canvas.requestFocus();
+        } else {
+            logging.add("I'm standing on an item! Let's pick it up!");
+            btn.requestFocus();
+        }
     }
 
     private void enemyMovement() {
