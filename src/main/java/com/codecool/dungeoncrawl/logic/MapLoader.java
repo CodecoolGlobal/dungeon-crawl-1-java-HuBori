@@ -19,9 +19,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import static java.lang.Integer.parseInt;
+
 public class MapLoader {
 
-    public static GameMap loadMap(int level) {
+    public static GameMap loadMap(String filename) {
         Map<Character, String> doorTypes = new HashMap<>(){{
             put('á', "storage");
             put('é', "dining room");
@@ -34,25 +36,26 @@ public class MapLoader {
             put('ű', "kitchen");
         }};
 
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
+        InputStream is = MapLoader.class.getResourceAsStream("/maps/" + filename);
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
 
         scanner.nextLine(); // empty line
 
-        GameMap map = new GameMap(width, height, CellType.EMPTY);
+        int level = parseInt(filename.split("level-")[1].split(".txt")[0]);
+        GameMap map = new GameMap(level, width, height, CellType.EMPTY);
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();
             for (int x = 0; x < width; x++) {
                 if (x < line.length()) {
                     Cell cell = map.getCell(x, y);
-                    if ("áéíóöőúüű".indexOf(line.charAt(x)) != -1) {
+                    if ("áéíóöőúüű".charAt(line.charAt(x)) != -1) { // TODO: why does it throw index error?
                         cell.setType(CellType.FLOOR);
                         new Key(cell, KeyType.BRONSE, level, doorTypes.get(line.charAt(x)));
-                    } else if ("ÁÉÍÓÖŐÚÜŰ".indexOf(line.charAt(x)) != -1) {
+                    } else if ("ÁÉÍÓÖŐÚÜŰ".charAt(line.charAt(x)) != -1) {
                         cell.setType(CellType.DOOR); // represent by ÁÉÍÓÖŐÚÜŰ (key pairs: áéíóöőúüű) -> max 9 door / floor (or same type)
-                        new Door(cell, level, doorTypes.get(Character.toLowerCase(line.charAt(x))));
+                        new Door(cell, level, doorTypes.get(line.charAt(x) - 'a' + 'A'));
                     } else {
                         switch (line.charAt(x)) {
                             case ' ':
@@ -95,10 +98,6 @@ public class MapLoader {
                             case 'a':
                                 cell.setType(CellType.FLOOR);
                                 new Armor(cell, ArmorType.SHIELD);
-                                break;
-                            case 'd':
-                                cell.setType(CellType.DOOR); // TODO: represent by ÁÉÍÓÖŐÚÜŰ (key pairs: áéíóöőúüű) -> max 9 door / floor (or same type)
-                                new Door(cell, 1, "only"); // TODO: resolve magic number
                                 break;
                             case 'A': // Use V and A for down and up (like arrows)
                                 cell.setType(CellType.STAIR);
