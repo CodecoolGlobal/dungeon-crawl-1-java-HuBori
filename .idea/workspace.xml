@@ -6,23 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9be36b1e-40a9-4176-9959-9c73ac794402" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/Tiles.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/logic/buildings/locks/Lock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/logic/buildings/locks/Lock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/codecool/dungeoncrawl/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/codecool/dungeoncrawl/Main$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/codecool/dungeoncrawl/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/codecool/dungeoncrawl/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/codecool/dungeoncrawl/Tiles$Tile.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/codecool/dungeoncrawl/Tiles.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/uml/actors.png" beforeDir="false" afterPath="$PROJECT_DIR$/uml/actors.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uml/buildings.png" beforeDir="false" afterPath="$PROJECT_DIR$/uml/buildings.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uml/game.png" beforeDir="false" afterPath="$PROJECT_DIR$/uml/game.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uml/items.png" beforeDir="false" afterPath="$PROJECT_DIR$/uml/items.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uml/logic.png" beforeDir="false" afterPath="$PROJECT_DIR$/uml/logic.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uml/txt_versions/actors.txt" beforeDir="false" afterPath="$PROJECT_DIR$/uml/txt_versions/actors.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uml/txt_versions/buildings.txt" beforeDir="false" afterPath="$PROJECT_DIR$/uml/txt_versions/buildings.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uml/txt_versions/items.txt" beforeDir="false" afterPath="$PROJECT_DIR$/uml/txt_versions/items.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uml/txt_versions/logic.txt" beforeDir="false" afterPath="$PROJECT_DIR$/uml/txt_versions/logic.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uml/txt_versions/rougelike_uml.txt" beforeDir="false" afterPath="$PROJECT_DIR$/uml/txt_versions/rougelike_uml.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +55,7 @@
       <recent name="com.codecool.dungeoncrawl.logic" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ActorTest">
+  <component name="RunManager" selected="Application.App">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="11" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -88,15 +71,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -118,8 +99,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ActorTest" />
         <item itemvalue="Application.App" />
+        <item itemvalue="JUnit.ActorTest" />
       </list>
     </recent_temporary>
   </component>
