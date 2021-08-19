@@ -5,10 +5,6 @@ import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -19,18 +15,11 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.*;
-
-import static java.lang.Integer.parseInt;
 
 public class Main extends Application {
     private Stage menuStage = new Stage();
@@ -81,7 +70,7 @@ public class Main extends Application {
         menu();
         setMapDependentVariables();
         ui.formatPickUpButton(pickUp, map.get(level));
-        Scene scene = new Scene(ui.getBorderPane());
+        Scene scene = new Scene(ui.getBorderPane()); // TODO: use setter after this
         primaryStage.setScene(scene);
         scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
         refresh();
@@ -89,22 +78,6 @@ public class Main extends Application {
         primaryStage.setTitle("Java's lot");
         canvas.requestFocus();
         primaryStage.show();
-/*
-        btn.setText("Pick up");
-        EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent click) {
-                Item item = map.get(level).getPlayer().getCell().getItem();
-                if (item != null) {
-                    item.pickUp(inventory, map);
-                    System.out.println("You picked up the legendary " + item.getDetail() + "!");
-                    item.pickUp(inventory.get(item.getType()), map.get(level));
-                    System.out.println("You picked up a(n) " + item.getDetail() + "!");
-                    refresh();
-                }
-                canvas.requestFocus();
-            }
-        };
-*/
     }
 
     private Canvas menuBg(){
@@ -310,18 +283,6 @@ public class Main extends Application {
         ui.updateStats();
         updateInventory();
         updateLog();
-
-        /*if (map.get(level).getPlayer().getCell().getItem() == null) {
-            canvas.requestFocus();
-        } else {
-            logging.add("Do you want to pick up this marvelous artifact master?");
-            pickUp.requestFocus();
-            //btn.requestFocus();
-        }
-
-        String tmp = ""; //making note for the commit, merge mostly done, fixing rest in ide then commit
-        for (Item item : inventory) {
-            tmp += item.getDetail() + "\n";*/
     }
 
     private void enemyMovement() {

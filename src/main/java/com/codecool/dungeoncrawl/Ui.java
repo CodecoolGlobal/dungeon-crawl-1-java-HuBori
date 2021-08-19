@@ -4,19 +4,15 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
-import com.codecool.dungeoncrawl.logic.items.key.Key;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.util.HashMap;
 
@@ -27,6 +23,7 @@ public class Ui {
     private Label maxHPLabel = new Label();
     private Label attackLabel = new Label();
     private Label defenseLabel = new Label();
+    private Button inGameMenu;
 
     public BorderPane getBorderPane() {
         return borderPane;
@@ -34,7 +31,7 @@ public class Ui {
 
     public Ui(Main main) {
         this.main = main;
-        Button inGameMenu = makeMenuButton();
+        inGameMenu = makeMenuButton();
         Label characterName = formatCharacterName();
         HashMap<String, Label> statLabels = makeStatLabels();
         statLabels.put("characterName", characterName);
@@ -106,8 +103,6 @@ public class Ui {
 
     private void addStatLabels(FlowPane stats, HashMap<String, Label> labels) {
         stats.getChildren().add(main.pickUp);
-        //stats.getChildren().add(new Label("                 "));
-        //stats.getChildren().add(inGameMenu); more complicated than thought, remains for next sprint
         stats.getChildren().add(new Label("           "));
         stats.getChildren().add(labels.get("characterName"));
         stats.getChildren().add(main.healthBar);
