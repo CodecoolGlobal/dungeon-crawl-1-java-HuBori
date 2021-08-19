@@ -5,25 +5,35 @@ package items {
     package offence {
         Weapon *-- WeaponType
     }
-    package utility {
+    package key {
         Key *-- KeyType
     }
     Item *-- ItemType
-    Item --|> Armor
-    Item --|> Weapon
-    Item --|> Key
+    Item <|-- Armor
+    Item <|-- Weapon
+    Item <|-- Key
 }
 
 class Armor {
-
+    private ArmorType subType
+    --
+    constructor, getters
+    public void pickUp(List<Item> inventory, GameMap map)
 }
 
 enum ArmorType {
-    SHIELD
-    HELMET
+    SHIELD(5)
+    HELMET(3)
+    private final int protection
+    --
+    constructor, getter
 }
 
 class Weapon {
+    private WeaponType subType
+    --
+    constructor, getters
+    public void pickUp(List<Item> inventory, GameMap map)
 }
 
 enum WeaponType {
@@ -32,27 +42,37 @@ enum WeaponType {
     DAGGER(1)
     SHORTSWORD(3)
     LANCE(8)
+    private final int attack
+    --
+    constructor, getter
 }
 
 class Key {
-    - int level
-    - KeyType type
-    - String detail
+    private int level
+    private KeyType subType
+    private String detail
+    --
+    constructor, getters
 }
 
 enum KeyType {
-    GOLD(DoorType("stair"))
-    SILVER(DoorType("chest"))
-    BRONSE(DoorType("room"))
+    GOLD
+    SILVER
+    BRONSE
 }
 
 class Item {
-    - ItemType type
-	- String detail
+    private ItemType type
+    private String detail
+    protected Cell cell
+    --
+    constructor, getters
+    public void pickUp(List<Item> inventory, GameMap map)
 }
 
 enum ItemType {
     WEAPON
     ARMOR
     UTILITY
+    KEY
 }

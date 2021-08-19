@@ -28,7 +28,7 @@ public abstract class Lock extends Obstacle {
         return type;
     }
 
-    public void attemptOpen(Key key) { // TODO: fix -> gets stuck when unable to open
+    public void attemptOpen(Key key) {
         System.out.println("There is a lock '" + detail + "' here. Let's open it!");
         System.out.println("Let's try key '" + key.getDetail() + "' into it!");
         if (key.getLevel() == level && key.getSubType() == type.getKey() && key.getDetail() == detail) {
