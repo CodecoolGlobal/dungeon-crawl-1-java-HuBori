@@ -1,238 +1,69 @@
-@startuml
-note top of MuzzyMonster : stays in place\nstrong defense\nminimal attack
-note top of MarchingMonster : moves back and forth\nmedium defense\nmedium attack
-note top of GiddyMonster : moves randomly\n(does NOT teleport)\nminimal defense\nstrong attack
-
-Game "1" *-- "3+" Map
-Game "1" --* "1" Player
-package geometry <<Folder>> {
-	Map "1" *-- "1+" Room
-	Room "1" *-- "Many" Cell
-	Cell "1" *-- "1" Coords
+App --> Main
+Main "1" *-- "1" View
+package logic {
+MapLoader <-- Main
+Tiles <-- MapLoader
+MapLoader "1" *-- "1" GameMap
+GameMap "1" o-- "many" Cell
+Cell "1" *-- "1" CellType
+Cell "1" *-- "0+" Drawable
+package actors {
+Character ..|> Drawable
+Player --|> Character
+package enemies {}
 }
-package content <<Folder>> {
-	Cell "1" o-- "1+" CellContent
-	CellContent "1" o-- "1" ContentType
-	package character <<Folder>> {
-		Character <|-- CellContent
-		Direction "1" *-- "1" Character
-		Player <|-- Character
-		package monster <<Folder>> {
-			Monster <|-- Character
-			MonsterType o-- Monster
-			MuzzyMonster <|.. Monster
-			MarchingMonster <|.. Monster
-			GiddyMonster <|.. Monster
-	}
-	package item <<Folder>> {
-		Item <|-- CellContent
-		ItemType o-- Item
-		package shield <<Folder>> {
-			Shield <|.. Item
-			Shield *-- ShieldType
-		}
-		package weapon <<Folder>> {
-			Weapon <|.. Item
-			Weapon *-- WeaponType
-		}
-		package key <<Folder>> {
-			Key <|.. Item
-			Key *-- KeyType
-		}
-	}
-	package building <<Folder>> {
-		Obstacle <|-- CellContent
-		ObstacleType o-- Obstacle
-		Wall <|-- Obstacle
-		package door <<Folder>> {
-			Door <|-- Obstacle
-			Door *-- DoorType
-		}
-	}
+package buildings {
+Obstacle ..|> Drawable
+ObstacleType "1" --* "Obstacle"
+Wall --|> Obstacle
+package locks {
+Lock --|> Obstacle
+LockType "1" --* "1" Lock
+package stairs {}
+}
+}
+package items {
+Item --|> Drawable
+ItemType "1" --* "1" Item
+package defence {}
+package key {}
+package offence {}
+}
 }
 
-class Game {
-	- dungeon: List<Maps>
-	- player: Player
-	- currentMap: int
-	- inventory: List<Item>
+class App {
+--
++ {static} void main(String[] args)
 }
 
-class Map {
-	- level: int
-	- rooms: List<Room>
-	- monsters: List<Monster>
-	- playerPos: Coords
+class Main {
+- Stage menuStage
+String[] mapFiles
+- HashMap<Integer, GameMap> map
+- View view;
+- Map<ItemType, ArrayList<Item>> inventory
+- int level
+.. UI ..
+many
+--
++ {static} void main(String[] args)
++ void start(Stage primaryStage)
+- void newGame()
+- void onKeyPressed(KeyEvent keyEvent)
+- void refresh()
+- void enemyMovement()
+.. UI ..
+- Canvas menuBg()
+- void menu()
+- void buttonFormatter(Button btn)
 }
 
-class Room {
-	- name: String (toilet, armory, etc.)
-	- Cells: List<Cell>
+class View {
+- final int width
+- final int height
+- GameMap map
+- GameMap scenery
+--
 }
 
-class Cell {
-	- content: List<CellContent>
-	- place: coords
-	- representative: char
-}
-
-class Coords {
-	- x: int
-	- y: int
-}
-
-enum Direction {
-	UP(Coords(0, 1))
-	RIGHT(Coords(1, 0))
-	DOWN(Coords(0, -1))
-	LEFT(Coords(-1, 0))
-	..
-	+ Coords getNext()
-}
-
-abstract class CellContent {
-	- type: ContentType
-}
-
-enum ContentType {
-	FLOOR(0)
-	OBSTACLE(2)
-	ITEM(1)
-	PLAYER(3)
-	..
-	+ int above()
-}
-	
-abstract class Character {
-	- maxHealth: int
-	- health: int
-	- defense: int
-	- attack: int
-	- position: Coords
-	- direction: Direction
-	- isPlayer: boolean 
-	..
-	+ void moveForward()
-}
-
-abstract class Monster {
-	- {final static} representative = 'M'
-	- type: MonsterType
-	- movingDir: Coords
-}
-
-enum MonsterType {
-	MUZZY
-	MARCHING
-	GIDDY
-}
-
-class MuzzyMonster {
-	- {static final} movingDir = Coords(0, 0)
-	- {static final} maxHealth = 30
-	- {static final} defense = 10
-	- {static final} attack = 1
-}
-
-class MarchingMonster {
-	- minCoords()
-	- maxCoords()
-	- {static final} maxHealth = 10
-	- {static final} defense = 5
-	- {static final} attack = 2
-	..
-	+ void turnBack()
-	- boolean shouldTurn()
-}
-
-class GiddyMonster {
-	- {static final} maxHealth = 5
-	- {static final} defense = 1
-	- {static final} attack = 10
-	..
-	+ void randomTurn()
-}
-
-class Player {
-	- {final static} representative = 'P'
-	- name: String
-	- maxLevel: int
-	- defense: int
-	- attack: int
-	- health: int
-	- {static final} maxHealth = 10
-}
-	
-abstract class Item {
-	- type: ItemType
-	- detail: String
-}
-
-enum ItemType {
-	WEAPON
-	SHIELD
-	KEY
-}
-
-class Shield {
-	- {final static} representative = 'S'
-	- defenseRaise(5)
-}
-
-class Weapon {
-	- {final static} representative = 'W'
-	- detail = "longsword"
-}
-
-enum WeaponType {
-	LONGSWORD(5)
-	MACE(10)
-	DAGGER(1)
-	SHORTSWORD(3)
-	LANCE(8)
-	..
-	- int attackRase()
-}
-
-class Key {
-	- {final static} representative = 'K'
-	- level: int
-	- type = KeyType("room")
-	- detail: room.name
-}
-
-enum KeyType {
-	GOLD(DoorType("stair"))
-	SILVER(DoorType("chest"))
-	BRONSE(DoorType("room"))						
-}
-	
-interface Obstacle {
-}
-
-enum ObstacleType {
-	MONSTER
-	DOOR
-	WALL
-	STAIR
-
-class Door {
-	- {final static} representative = '/'
-	- key: Key
-	- reachable: boolean
-}
-
-enum DoorType {
-	ROOM
-	CHEST
-	STAIR
-}
-
-class Wall {
-	- {final static} representative = '#'
-}
-
-class Floor {
-	- {final static} representative = '.'
-}
 @enduml
