@@ -46,10 +46,12 @@ public class Main extends Application {
     private Canvas canvas;
     private GraphicsContext context;
     private Button btn = new Button();
-    private Label healthLabel = new Label();
-    private Label maxHPLabel = new Label();
-    private Label attackLabel = new Label();
-    private Label defenseLabel = new Label();
+    private HashMap<String, Label> statLabels = new HashMap<> {{
+        put("healthLabel", new Label());
+        put("maxHPLabel", new Label());
+        put("attackLabel", new Label());
+        put("defenseLabel", new Label());
+    }};
     private Button pickUp = new Button("Pick up");
     private ProgressBar healthBar = new ProgressBar(1);
     private Label invLabel = new Label("Inventory:\n");
@@ -126,10 +128,13 @@ public class Main extends Application {
         textFormatter(slash);
         textFormatter(attack);
         textFormatter(defense);
+        statLabels.values().stream().map(s -> textFormatter(s)).collect(Collectors.toList()); // TODO: test it
+        /* // refactored above
         textFormatter(healthLabel);
         textFormatter(maxHPLabel);
         textFormatter(attackLabel);
         textFormatter(defenseLabel);
+         */
 
 
         stats.setMaxWidth(160);
@@ -143,13 +148,13 @@ public class Main extends Application {
         stats.getChildren().add(characterName);
         stats.getChildren().add(healthBar);
         stats.getChildren().add(health);
-        stats.getChildren().add(healthLabel);
+        stats.getChildren().add(statLabels.get("healthLabel"));
         stats.getChildren().add(slash);
-        stats.getChildren().add(maxHPLabel);
+        stats.getChildren().add(statLabels.get("maxHPLabel"));
         stats.getChildren().add(attack);
-        stats.getChildren().add(attackLabel);
+        stats.getChildren().add(statLabels.get("attackLabel"));
         stats.getChildren().add(defense);
-        stats.getChildren().add(defenseLabel);
+        stats.getChildren().add(statLabels.get("defenseLabel"));
 
         stats.setStyle("-fx-border-color: #9f9f9f;" +
                 "-fx-border-width: 2px");
@@ -373,17 +378,12 @@ public class Main extends Application {
         }
 
         healthBar.setProgress((double) player.getHealth() / (double) player.getMaxHealth());
-        healthLabel.setText("" + player.getHealth());
-        maxHPLabel.setText("" + player.getMaxHealth());
-        attackLabel.setText("" + player.getAttack());
-        defenseLabel.setText("" + player.getDefense());
+        statLabels.put("healthLabel").setText("" + player.getHealth());
+        statLabels.put("maxHPLabel").setText("" + player.getMaxHealth());
+        statLabels.put("attackLabel").setText("" + player.getAttack());
+        statLabels.put("defenseLabel").setText("" + player.getDefense());
 
-        int inventorySize = inventory.get(ItemType.ARMOR).size();
-        inventorySize += inventory.get(ItemType.WEAPON).size();
-        inventorySize += inventory.get(ItemType.KEY).size();
-        inventorySize += inventory.get(ItemType.UTILITY).size();
-
-        String invTitle = String.format("Inventory (%d):", inventorySize);
+        String invTitle = String.format("Inventory (%d):", inventory.getSize());
         String tmp = "";
         Set<ItemType> setOfKeySet = inventory.keySet();
         for (ItemType key: setOfKeySet) {
