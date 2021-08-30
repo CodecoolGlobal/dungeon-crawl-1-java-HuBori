@@ -1,0 +1,93 @@
+package logic {
+    Tiles <-- MapLoader
+    MapLoader "1" *-- "1" GameMap
+    GameMap "1" o-- "many" Cell
+    Cell "1" *-- "1" CellType
+    Cell "1" *-- "0+" Drawable
+    package actors {
+    Character ..|> Drawable
+    Player --|> Character
+    package enemies {}
+    }
+    package buildings {
+        Obstacle ..|> Drawable
+        ObstacleType "1" --* "1" Obstacle
+        Wall --|> Obstacle
+        package locks {}
+    }
+    package items {
+        Item ..|> Drawable
+        ItemType "1" --* "1" Item
+        package defence {}
+        package offence {}
+        package key {}
+    }
+}
+
+class Cell {
+    - CellType type
+    - Item item
+    - Character actor
+    - Lock lock
+    - GameMap gameMap
+    - int x, y
+    --
+    constructors, getters, setters
+}
+
+enum CellType {
+    EMPTY("empty")
+    FLOOR("floor")
+    WALL("wall")
+    DOOR("door")
+    CHEST("chest")
+    STAIRDOWN("stair-down")
+    STAIRUP("stair-up")
+    - final String tileName
+    --
+    +CellType(String tileName)
+}
+
+interface Drawable {
+    --
+    String getTileName()
+}
+
+class GameMap {
+    - int width
+    - int height
+    - Cell[][] cells
+    - int level
+    - Player player
+    --
+    + GameMap(int level, int width, int height, CellType defaultCellType)
+    getters, setter
+}
+
+class MapLoader {
+    --
+    + {static} GameMap loadMap(String filename)
+}
+
+class Tiles {
+    + {static} int TILE_WIDTH
+    - {static} Image tileset
+    - {static} Map<String, Tile> tileMap
+    --
+    + {static} class Tile
+    + {static} void drawTile(GraphicsContext context, Drawable d, int x, int y)
+}
+enum ItemType {
+WEAPON
+ARMOR
+UTILITY
+KEY
+}
+
+enum ObstacleType {
+WALL
+LOCK
+}
+abstract class Item {}
+abstract class Character {}
+abstract class Obstacle {}

@@ -1,0 +1,78 @@
+package items {
+    package defence {
+        Armor *-- ArmorType
+    }
+    package offence {
+        Weapon *-- WeaponType
+    }
+    package key {
+        Key *-- KeyType
+    }
+    Item *-- ItemType
+    Item <|-- Armor
+    Item <|-- Weapon
+    Item <|-- Key
+}
+
+class Armor {
+    private ArmorType subType
+    --
+    constructor, getters
+    public void pickUp(List<Item> inventory, GameMap map)
+}
+
+enum ArmorType {
+    SHIELD(5)
+    HELMET(3)
+    private final int protection
+    --
+    constructor, getter
+}
+
+class Weapon {
+    private WeaponType subType
+    --
+    constructor, getters
+    public void pickUp(List<Item> inventory, GameMap map)
+}
+
+enum WeaponType {
+    LONGSWORD(5)
+    MACE(10)
+    DAGGER(1)
+    SHORTSWORD(3)
+    LANCE(8)
+    private final int attack
+    --
+    constructor, getter
+}
+
+class Key {
+    private int level
+    private KeyType subType
+    private String detail
+    --
+    constructor, getters
+}
+
+enum KeyType {
+    GOLD
+    SILVER
+    BRONSE
+}
+
+class Item {
+    private ItemType type
+    private String detail
+    protected Cell cell
+    --
+    constructor, getters
+    public void pickUp(List<Item> inventory, GameMap map)
+}
+
+enum ItemType {
+    WEAPON
+    ARMOR
+    UTILITY
+    KEY
+}

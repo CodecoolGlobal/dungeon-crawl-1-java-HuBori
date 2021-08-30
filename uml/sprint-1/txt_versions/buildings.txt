@@ -1,0 +1,86 @@
+package buildings {
+    Obstacle "1" *-- "1" ObstacleType
+    Wall --|> Obstacle
+    package locks {
+        Lock --|> Obstacle
+        Lock "1" *-- "1" LockType
+        Chest --|> Lock
+        Door --|> Lock
+        package stairs {
+            Stair --|> Lock
+            StairDown --|> Stair
+            StairUp --|> Stair
+        }
+    }
+}
+
+abstract class Lock {
+    - int level
+    - String detail
+    - LockType type
+    # boolean passable
+    --
+    constructor, getters, setters
+    + void attemptOpen(Key key)
+    + String getTileName()
+}
+
+enum LockType {
+    DOOR(KeyType.BRONSE)
+    CHEST(KeyType.SILVER)
+    STAIR(KeyType.GOLD)
+    - KeyType key
+    --
+    LockType(KeyType key)
+    + KeyType getKey()
+}
+
+abstract class Obstacle {
+    - ObstacleType type
+    # Cell cell
+    # {static} String tileName
+    --
+    constructor, getters, setters
+}
+
+enum ObstacleType {
+    WALL
+    LOCK
+}
+
+class Wall {
+    --
+    constructor, getters, setters
+    + String getTileName()
+}
+
+class Chest {
+    - Item content
+    --
+    constructor, getters, setters
+    + String getTileName()
+    - Item getRandomItem()
+}
+
+class Door {
+    --
+    constructor, getters, setters
+    + String getTileName()
+}
+
+abstract class Stair {
+    --
+    constructor
+}
+
+class StairDown {
+    --
+    constructor
+    + String getTileName()
+}
+
+class StairUp {
+    --
+    constructor
+    + String getTileName()
+}

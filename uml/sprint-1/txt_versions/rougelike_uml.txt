@@ -1,0 +1,69 @@
+App --> Main
+Main "1" *-- "1" View
+package logic {
+MapLoader <-- Main
+Tiles <-- MapLoader
+MapLoader "1" *-- "1" GameMap
+GameMap "1" o-- "many" Cell
+Cell "1" *-- "1" CellType
+Cell "1" *-- "0+" Drawable
+package actors {
+Character ..|> Drawable
+Player --|> Character
+package enemies {}
+}
+package buildings {
+Obstacle ..|> Drawable
+ObstacleType "1" --* "Obstacle"
+Wall --|> Obstacle
+package locks {
+Lock --|> Obstacle
+LockType "1" --* "1" Lock
+package stairs {}
+}
+}
+package items {
+Item --|> Drawable
+ItemType "1" --* "1" Item
+package defence {}
+package key {}
+package offence {}
+}
+}
+
+class App {
+--
++ {static} void main(String[] args)
+}
+
+class Main {
+- Stage menuStage
+String[] mapFiles
+- HashMap<Integer, GameMap> map
+- View view;
+- Map<ItemType, ArrayList<Item>> inventory
+- int level
+.. UI ..
+many
+--
++ {static} void main(String[] args)
++ void start(Stage primaryStage)
+- void newGame()
+- void onKeyPressed(KeyEvent keyEvent)
+- void refresh()
+- void enemyMovement()
+.. UI ..
+- Canvas menuBg()
+- void menu()
+- void buttonFormatter(Button btn)
+}
+
+class View {
+- final int width
+- final int height
+- GameMap map
+- GameMap scenery
+--
+}
+
+@enduml
