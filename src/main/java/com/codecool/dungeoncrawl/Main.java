@@ -31,11 +31,16 @@ import static java.lang.Integer.parseInt;
 public class Main extends Application {
     private Stage menuStage = new Stage();
     String[] mapFiles = new String[] {"level-1.txt", "level-2.txt", "level-3.txt"};
+
     private HashMap<Integer, GameMap> map = new HashMap<>() {{
         put(1, MapLoader.loadMap(mapFiles[0]));
         put(2, MapLoader.loadMap(mapFiles[1]));
         put(3, MapLoader.loadMap(mapFiles[2]));
     }};
+    private int level = 1;
+    private Player player = map.get(level).getPlayer();
+    private Inventory inventory = player.getInventory();
+
     private View view;
     private GameMap scenery;
     private Canvas canvas;
@@ -48,17 +53,9 @@ public class Main extends Application {
     private Button pickUp = new Button("Pick up");
     private ProgressBar healthBar = new ProgressBar(1);
     private Label invLabel = new Label("Inventory:\n");
-    private Map<ItemType, ArrayList<Item>> inventory = new HashMap<>() {
-        {
-            put(ItemType.ARMOR, new ArrayList<>());
-            put(ItemType.WEAPON, new ArrayList<>());
-            put(ItemType.KEY, new ArrayList<>());
-            put(ItemType.UTILITY, new ArrayList<>());
-        }};
     private Label invItems = new Label("");
     public static List<String> logging = new ArrayList<>();
     private Label logs = new Label("");
-    private int level = 1;
 
     public Main() throws IOException {
     }
@@ -79,7 +76,7 @@ public class Main extends Application {
 
         buttonFormatter(pickUp);
         pickUp.setOnAction(e -> {
-            Item item = map.get(level).getPlayer().getCell().getItem();
+            Item item = player.getCell().getItem();
             if (item != null) {
                 item.pickUp(inventory.get(ItemType.KEY), map.get(level));
                 logging.add("You picked up the legendary " + item.getDetail() + "!");
@@ -102,7 +99,7 @@ public class Main extends Application {
         btn.setText("Pick up");
         EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent click) {
-                Item item = map.get(level).getPlayer().getCell().getItem();
+                Item item = player.getCell().getItem();
                 if (item != null) {
                     item.pickUp(inventory, map);
                     System.out.println("You picked up the legendary " + item.getDetail() + "!");
@@ -115,7 +112,7 @@ public class Main extends Application {
         };
 */
 
-        Label characterName = new Label(map.get(level).getPlayer().getName());
+        Label characterName = new Label(player.getName());
         characterName.setTextFill(Color.web("#FFB10A"));
         characterName.setStyle("-fx-font-weight: bold;" +
                 "-fx-font: 30 ani");
@@ -254,7 +251,7 @@ public class Main extends Application {
         buttonFormatter(mainMenu);
 
         play.setOnAction(e -> {
-            map.get(level).getPlayer().setName(input.getText());
+            player.setName(input.getText());
             menuStage.close();
         });
 
@@ -326,27 +323,27 @@ public class Main extends Application {
         Cell cell;
         switch (keyEvent.getCode()) {
             case UP:
-                cell = map.get(level).getCell(map.get(level).getPlayer().getX(), map.get(level).getPlayer().getY() - 1);
+                cell = map.get(level).getCell(player.getX(), player.getY() - 1);
                 if (cell.getType() != CellType.WALL) {
-                    map.get(level).getPlayer().tryMove(0, -1, inventory.get(ItemType.KEY));
+                    player.tryMove(0, -1, inventory.get(ItemType.KEY));
                 }
                 break;
             case DOWN:
-                cell = map.get(level).getCell(map.get(level).getPlayer().getX(), map.get(level).getPlayer().getY() + 1);
+                cell = map.get(level).getCell(player.getX(), player.getY() + 1);
                 if (cell.getType() != CellType.WALL) {
-                    map.get(level).getPlayer().tryMove(0, 1, inventory.get(ItemType.KEY));
+                    player.tryMove(0, 1, inventory.get(ItemType.KEY));
                 }
                 break;
             case LEFT:
-                cell = map.get(level).getCell(map.get(level).getPlayer().getX() - 1, map.get(level).getPlayer().getY());
+                cell = map.get(level).getCell(player.getX() - 1, player.getY());
                 if (cell.getType() != CellType.WALL) {
-                    map.get(level).getPlayer().tryMove(-1, 0, inventory.get(ItemType.KEY));
+                    player.tryMove(-1, 0, inventory.get(ItemType.KEY));
                 }
                 break;
             case RIGHT:
-                cell = map.get(level).getCell(map.get(level).getPlayer().getX() + 1, map.get(level).getPlayer().getY());
+                cell = map.get(level).getCell(player.getX() + 1, player.getY());
                 if (cell.getType() != CellType.WALL) {
-                    map.get(level).getPlayer().tryMove(1, 0, inventory.get(ItemType.KEY));
+                    player.tryMove(1, 0, inventory.get(ItemType.KEY));
                 }
                 break;
         }
@@ -375,28 +372,16 @@ public class Main extends Application {
             }
         }
 
-        healthBar.setProgress((double) map.get(level).getPlayer().getHealth() / (double) map.get(level).getPlayer().getMaxHealth());
-        healthLabel.setText("" + map.get(level).getPlayer().getHealth());
-        maxHPLabel.setText("" + map.get(level).getPlayer().getMaxHealth());
-        attackLabel.setText("" + map.get(level).getPlayer().getAttack());
-        defenseLabel.setText("" + map.get(level).getPlayer().getDefense());
+        healthBar.setProgress((double) player.getHealth() / (double) player.getMaxHealth());
+        healthLabel.setText("" + player.getHealth());
+        maxHPLabel.setText("" + player.getMaxHealth());
+        attackLabel.setText("" + player.getAttack());
+        defenseLabel.setText("" + player.getDefense());
 
         int inventorySize = inventory.get(ItemType.ARMOR).size();
         inventorySize += inventory.get(ItemType.WEAPON).size();
         inventorySize += inventory.get(ItemType.KEY).size();
         inventorySize += inventory.get(ItemType.UTILITY).size();
-
-        /*if (map.get(level).getPlayer().getCell().getItem() == null) {
-            canvas.requestFocus();
-        } else {
-            logging.add("Do you want to pick up this marvelous artifact master?");
-            pickUp.requestFocus();
-            //btn.requestFocus();
-        }
-
-        String tmp = ""; //making note for the commit, merge mostly done, fixing rest in ide then commit
-        for (Item item : inventory) {
-            tmp += item.getDetail() + "\n";*/
 
         String invTitle = String.format("Inventory (%d):", inventorySize);
         String tmp = "";
@@ -408,9 +393,13 @@ public class Main extends Application {
                 tmp += String.format("\t\t%s\n", ((ArrayList<Item>) value).get(i).getDetail());
             }
         }
+
         invLabel.setText(invTitle);
         invItems.setText(tmp);
-        tmp = "";
+    }
+
+    private void updateLog() {
+        String tmp = "";
         if(logging.size() > 5){
             logging.remove(0);
         }
@@ -419,12 +408,19 @@ public class Main extends Application {
         }
         logs.setText(tmp);
 
-        if (map.get(level).getPlayer().getCell().getItem() == null) {
+        if (player.getCell().getItem() == null) {
             canvas.requestFocus();
         } else {
             logging.add("I'm standing on an item! Let's pick it up!");
             btn.requestFocus();
         }
+    }
+
+    protected void refresh() {
+        updateScenery();
+        ui.updateStats();
+        updateInventory();
+        updateLog();
     }
 
     private void enemyMovement() {

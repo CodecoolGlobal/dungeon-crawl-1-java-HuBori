@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 
 public class Player extends Character {
     private String name = "you didn't care enough to name your character, eh? are you a dev or something?";
+    private Inventory inventory = new Inventory();
 
     public Player(Cell cell) {
         super(cell);
@@ -47,5 +48,9 @@ public class Player extends Character {
         if (nextCell.getActor() != null) {
             attack(nextCell.getActor());
         }
+    }
+
+    public Map<ItemType, ArrayList<Item>> getInventory() {
+        return inventory;
     }
 }

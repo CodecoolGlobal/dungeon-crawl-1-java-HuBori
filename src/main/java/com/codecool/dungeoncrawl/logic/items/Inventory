@@ -1,0 +1,74 @@
+package com.codecool.dungeoncrawl.logic.items;
+
+import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
+import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.GameMap;
+
+import java.util.List;
+
+public abstract class Inventory {
+    private List<Armor> armorList;
+    private List<Weapon> weaponList;
+    private List<Key> keyList;
+    private List<Item> utilList;
+
+    private int size;
+
+    public Inventory() { // create empty inventory
+        armorList = new ArrayList<>();
+        weaponList = new ArrayList<>();
+        keyList = new ArrayList<>();
+        utilList = new ArrayList<>();
+        size = 0;
+    }
+
+    public Inventory(List<Item> items) { // create inventory with given contents
+        Inventory();
+        for (int i = 0; i < items.size(); i++) {
+            Item item = items.get(i);
+            addItem(item);
+        }
+    }
+
+    public void addItem(Item item) { // add new item to inventory
+        switch (item.getType()) {
+            case ItemType.ARMOR : armorList.add(item); size++; break;
+            case ItemType.WEAPON : weaponList.add(item); size++; break;
+            case ItemType.KEY : keyList.add(item); size++; break;
+            default: utilList.add(item);
+        }
+    }
+
+    public Map<ItemType, ArrayList<Item>> getContents() { // get all contents stored in inventory
+        Map<ItemType, ArrayList<Item>> allContents = new HashMap<>() {
+            {
+                put(ItemType.ARMOR, armorList);
+                put(ItemType.WEAPON, weaponList);
+                put(ItemType.KEY, keyList);
+                put(ItemType.UTILITY, utilList);
+            }
+        };
+        return allContents;
+    }
+
+    public List<Item> getContents(ItemType itemType) { // get all contents of type itemType from inventory
+        switch (itemType) {
+            case ItemType.ARMOR : return armorList;
+            case ItemType.WEAPON : return weaponList;
+            case ItemType.KEY : return keyList;
+            default: return utilList;
+        }
+    }
+
+    public int getSize() { return size; } // get number of all items stored in inventory
+
+    public int getSize(ItemType itemType) { // get number of items of type itemType stored in inventory
+        switch (itemType) {
+            case ItemType.ARMOR : return armorList.size();
+            case ItemType.WEAPON : return weaponList.size();
+            case ItemType.KEY : return keyList.size();
+            default: return utilList.size();
+        }
+    }
+}
